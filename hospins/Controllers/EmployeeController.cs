@@ -161,6 +161,11 @@ namespace hospins.Controllers
         #endregion
 
         #region :: Employee ::
+        public IActionResult Index()
+        {
+            return View();
+        }
+
         [HttpGet]
         public IActionResult ManageEmployee(int id = 0)
         {
@@ -351,6 +356,40 @@ namespace hospins.Controllers
             }
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteMultipleEmployee(string Id)
+        {
+            try
+            {
+                if (Id != null)
+                {
+                    SqlParameter[] param = {
+                        new SqlParameter("@EmployeeId", Id),
+                        new SqlParameter("@UserId", CurrentContext.UserDetail.UserId)
+                    };
+                    var isSuccess = _IEmployeeRepository.DeleteRecordSproc("DeleteEmployee", param, ConfigurationSettings.DBConnection);
+
+                    return Json(new { success = "true", ReturnMsg = "Employee deleted successfully.", PartialviewContent = "" });
+                }
+                else
+                {
+                    return Json(new { success = "false", ReturnMsg = "Employee does not exist.", PartialviewContent = "" });
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.SetLog("Master/DeleteMultipleEmployee");
+                return Json(new { success = "false", ReturnMsg = "Error", PartialviewContent = "" });
+            }
+        }
+        #endregion
+
+        #region :: Document Type ::
+        public IActionResult DocumentType()
+        {
+            return View();
+        }
         #endregion
     }
 }

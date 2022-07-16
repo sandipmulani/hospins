@@ -93,6 +93,16 @@ namespace hospins.Infrastructure
                         gridParams.ExportedFileName = "Designation List";
                         break;
                     }
+                case "Employee":
+                    {
+                        gridParams.ColumnsName = "EM.EmployeeId,DE.Name as Designation,EM.FirstName + ' ' + EM.LastName as Name,EM.Email,EM.Picture,EM.Mobile,EM.IsActive,EM.IsDelete";
+                        gridParams.SortColumn = "EmployeeId";
+                        gridParams.SortOrder = "desc";
+                        gridParams.TableName = "[dbo].[Employee] EM LEFT JOIN [dbo].[Designation] DE on DE.DesignationId = EM.DesignationId";
+                        gridParams.WhereClause = " IsDelete=0  " + Where;
+                        gridParams.ExportedFileName = "Employee List";
+                        break;
+                    }
                 default:
                     break;
             }
