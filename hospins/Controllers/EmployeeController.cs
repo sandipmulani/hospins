@@ -22,13 +22,15 @@ namespace hospins.Controllers
         private readonly ICommonRepository<EmployeeSalarySetup> _IEmployeeSalarySetupRepository;
         private readonly ICommonRepository<EmployeeHistory> _IEmployeeHistoryRepository;
         private readonly ICommonRepository<EmployeeDocument> _IEmployeeDocumentRepository;
+        private readonly ICommonRepository<DocumentType> _IDocumentTypeRepository;
         public EmployeeController(IMapper mapper,IServiceProvider _service,
         ICommonRepository<Designation> iDesignationRepository,
         ICommonRepository<Employee> iEmployeeRepository,
         ICommonRepository<EmployeeAddress> iEmployeeAddressRepository,
         ICommonRepository<EmployeeSalarySetup> iEmployeeSalarySetupRepository,
         ICommonRepository<EmployeeHistory> iEmployeeHistoryRepository,
-        ICommonRepository<EmployeeDocument> iEmployeeDocumentRepository)
+        ICommonRepository<EmployeeDocument> iEmployeeDocumentRepository,
+        ICommonRepository<DocumentType> iDocumentTypeRepository)
         {
             _mapper = mapper;
             _serviceProvider = _service;
@@ -38,6 +40,7 @@ namespace hospins.Controllers
             _IEmployeeSalarySetupRepository = iEmployeeSalarySetupRepository;
             _IEmployeeHistoryRepository = iEmployeeHistoryRepository;
             _IEmployeeDocumentRepository = iEmployeeDocumentRepository;
+            _IDocumentTypeRepository = iDocumentTypeRepository;
         }
 
         #region :: Designation ::
@@ -61,7 +64,7 @@ namespace hospins.Controllers
             }
             catch (Exception ex)
             {
-                ex.SetLog("Logbook/ManageDesignation");
+                ex.SetLog("Employee/ManageDesignation");
                 return PartialView(Designation);
             }
         }
@@ -101,7 +104,7 @@ namespace hospins.Controllers
             }
             catch (Exception ex)
             {
-                ex.SetLog("Logbook/ManageDesignation");
+                ex.SetLog("Employee/ManageDesignation");
                 return Json(new { success = "false", ReturnMsg = ex.Message, PartialviewContent = this.RenderPartialViewToString("ManageDesignation", designation, _serviceProvider) });
             }
         }
@@ -385,10 +388,126 @@ namespace hospins.Controllers
         }
         #endregion
 
-        #region :: Document Type ::
+        #region :: DocumentType ::
         public IActionResult DocumentType()
         {
             return View();
+        }
+
+        [HttpGet]
+        public IActionResult ManageDocumentType(int id = 0)
+        {
+            var DocumentType = new DocumentTypeModel();
+            try
+            {
+                if (id != 0)
+                {
+                    DocumentType = _IDocumentTypeRepository.GetById(id).ToModel();
+                    
+                }
+                return PartialView(DocumentType);
+            }
+            catch (Exception ex)
+            {
+                ex.SetLog("Employee/ManageDocumentType");
+                return PartialView(DocumentType);
+            }
+        }
+
+        [HttpPost]
+        public IActionResult ManageDocumentType(DocumentTypeModel documentType)
+        {
+            try
+            {
+                var ObjDocumentType = documentType.DocumentTypeId != 0 ? _IDocumentTypeRepository.GetByIdWithNoTracking(documentType.DocumentTypeId) : null;
+                if (ObjDocumentType == null || !string.Equals(ObjDocumentType.Name.Trim().ToLower(), documentType.Name.Trim().ToLower(), StringComparison.OrdinalIgnoreCase))
+                {
+                    var documentTypeDb = _IDocumentTypeRepository.GetAll(x => string.Equals(x.Name.Trim().ToLower(), documentType.Name.Trim().ToLower()) && !x.IsDelete).FirstOrDefault();
+                    if (documentTypeDb != null)
+                        return Json(new { success = "false", ReturnMsg = "Document Type already exists.", PartialviewContent = this.RenderPartialViewToString("ManageDocumentType", documentType, _serviceProvider) });
+                }
+                if (ModelState.IsValid)
+                {
+                    if (documentType.DocumentTypeId == 0)
+                    {
+                        DocumentType DocumentTypeObj = _IDocumentTypeRepository.InsertAndGetObj(documentType.ToEntity(), CurrentContext.UserDetail.UserId);
+                        return Json(new { success = "true", ReturnMsg = "Document Type saved.", PartialviewContent = "" });
+                    }
+                    else
+                    {
+                        _IDocumentTypeRepository.Update(documentType.ToEntity(), CurrentContext.UserDetail.UserId);
+                        return Json(new { success = "true", ReturnMsg = "Document Type updated.", PartialviewContent = "" });
+                    }
+                }
+                else
+                {
+                    string _message = string.Join(Environment.NewLine, ModelState.Values
+                                               .SelectMany(x => x.Errors)
+                                               .Select(x => x.ErrorMessage));
+                    return Json(new { success = "false", ReturnMsg = _message, PartialviewContent = this.RenderPartialViewToString("ManageDocumentType", documentType, _serviceProvider) });
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.SetLog("Employee/ManageDocumentType");
+                return Json(new { success = "false", ReturnMsg = ex.Message, PartialviewContent = this.RenderPartialViewToString("ManageDocumentType", documentType, _serviceProvider) });
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult StatusDocumentType(int Id)
+        {
+            try
+            {
+                var documentType = _IDocumentTypeRepository.GetById(Id);
+                if (documentType != null)
+                {
+                    documentType.IsActive = documentType.IsActive = !documentType.IsActive;
+                    _IDocumentTypeRepository.Update(documentType, CurrentContext.UserDetail.UserId, "status");
+                    return Json(new { success = "true", ReturnMsg = "Document Type status change successfully.", PartialviewContent = "" });
+                }
+                else
+                {
+                    return Json(new { success = "false", ReturnMsg = "Document Type does not exist.", PartialviewContent = "" });
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.SetLog("Master/StatusDocumentType");
+                return Json(new { success = "false", ReturnMsg = "Error", PartialviewContent = "" });
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteMultipleDocumentType(string Id)
+        {
+            try
+            {
+                if (Id != null)
+                {
+                    //var ids = Id.Split(",").Select(t => Convert.ToInt32(t)).ToList();
+                    //var documentType = _IDocumentTypeRepository.GetAll().Where(t => ids.Contains(t.DocumentTypeId));
+
+                    SqlParameter[] param = {
+                        new SqlParameter("@DocumentTypeId", Id),
+                        new SqlParameter("@UserId", CurrentContext.UserDetail.UserId)
+                    };
+                    var isSuccess = _IDocumentTypeRepository.DeleteRecordSproc("DeleteDocumentType", param, ConfigurationSettings.DBConnection);
+
+                    return Json(new { success = "true", ReturnMsg = "Document Type deleted successfully.", PartialviewContent = "" });
+                }
+                else
+                {
+                    return Json(new { success = "false", ReturnMsg = "Document Type does not exist.", PartialviewContent = "" });
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.SetLog("Master/DeleteMultipleDocumentType");
+                return Json(new { success = "false", ReturnMsg = "Error", PartialviewContent = "" });
+            }
         }
         #endregion
     }

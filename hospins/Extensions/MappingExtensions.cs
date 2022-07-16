@@ -180,5 +180,16 @@ namespace hospins.Extensions
             return _mapper.Map< List<EmployeeDocument>, List<EmployeeDocumentModel>>(entity);
         }
         #endregion
+         #region :: Document Type ::
+        public static DocumentType ToEntity(this DocumentTypeModel model)
+        {
+            return _mapper.Map<DocumentTypeModel, DocumentType>(model);
+        }
+
+        public static DocumentTypeModel ToModel(this DocumentType entity)
+        {
+            return _mapper.Map<DocumentType, DocumentTypeModel>(entity);
+        }
+        #endregion
     }
 }

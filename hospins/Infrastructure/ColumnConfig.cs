@@ -103,6 +103,16 @@ namespace hospins.Infrastructure
                         gridParams.ExportedFileName = "Employee List";
                         break;
                     }
+                case "DocumentType":
+                    {
+                        gridParams.ColumnsName = "DocumentTypeId,Name,SortOrder,IsActive,IsDelete";
+                        gridParams.SortColumn = "DocumentTypeId";
+                        gridParams.SortOrder = "desc";
+                        gridParams.TableName = "DocumentType";
+                        gridParams.WhereClause = " IsDelete=0  " + Where;
+                        gridParams.ExportedFileName = "Document Type List";
+                        break;
+                    }
                 default:
                     break;
             }
