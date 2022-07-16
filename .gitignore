@@ -1,0 +1,16 @@
+
+*.v2
+*.v1
+*.bin
+*.txt
+.vs/*
+*.dll
+*.cache
+bin/*
+obj/*
+hospins/obj/*
+hospins/bin/*
+hospins.Repository/bin/*
+hospins.Repository/obj/*
+hospins/.config/*
+hospins/.vs/*

@@ -1,0 +1,146 @@
+﻿@using hospins.Infrastructure;
+@using hospins.Repository.Infrastructure;
+@model hospins.Models.LogbookModel
+@{
+    ViewData["Title"] = "Manage Logbook";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="content">
+    <ol class="breadcrumb">
+        <li><a href="#">Logbook</a></li>
+        <li class="active">Add/Edit Logbook</li>
+    </ol>
+    <!-- load messages -->
+    <div class="se-pre-con"></div>
+    <!-- load custom page -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-bd lobidrag">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        <h4>Add Logbook</h4>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <form asp-controller="Logbook" asp-action="ManageLogbook" method="post" id="frmLogbook" role="form">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" asp-for="LogbookId" />
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="col-md-12 form-group">
+                            <label class="col-sm-2 col-form-div">Log Book Id</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" asp-for="SequnceId" disabled/>
+                            </div>
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <label class="col-sm-2 col-form-div">Log Book <i class="text-danger">*</i></label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" asp-for="Name" autocomplete="off" maxlength="100" autofocus placeholder="Log Book"/>
+                                <span class="text-danger" asp-validation-for="Name"></span>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-12 form-group">
+                            <label for="last_name" class="col-sm-2 col-form-div">Date<i class="text-danger">*</i></label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control custdatepicker" placeholder="Date" asp-for="Date" asp-format="{0:MMM dd, yyyy}" autocomplete="off"/>
+                                <span class="text-danger" asp-validation-for="Date"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <label class="col-sm-2 col-form-div">Category</label>
+                            <div class="col-sm-4">
+                                <drop-down-list class="select2-selection" asp-for="CategoryId" asp-mode="Category" asp-default="Select Category"></drop-down-list>
+                            </div>
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <label class="col-sm-2 col-form-div">SubCategory</label>
+                            <div class="col-sm-4">
+                                <select class="select2-selection w-100" title="Select SubCategory" asp-for="SubCategoryId"></select>
+                            </div>
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <label class="col-sm-2 col-form-div">Description</label>
+                            <div class="col-sm-4">
+                                <textarea cols="10" rows="3" class="form-control" asp-for="Description"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <label class="col-sm-2 col-form-div">Assisgn to</label>
+                            <div class="col-sm-4">
+                                <drop-down-list class="select2-selection" asp-for="AssisgnTo" asp-mode="User" asp-default="Select AssisgnTo"></drop-down-list>
+                            </div>
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <label class="col-sm-2 col-form-div">Priority</label>
+                            <div class="col-sm-4">
+                                <drop-down-list class="select2-selection" asp-for="PriorityId" asp-mode="Priority" asp-default="Select Priority"></drop-down-list>
+                            </div>
+                        </div>
+
+                        <div class="form-group text-right">
+                            <a asp-area = "" asp-controller="Logbook" asp-action="Index" class="btn btn-default">Back</a>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="~/js/jquery.validate.min.js"></script>
+    <script src="~/js/jquery.validate.unobtrusive.min.js"></script> 
+    <script>
+        if ('@ViewBag.success' == "true" && '@ViewBag.message' != "") {
+            Popuphtml('@ViewBag.message', 'success');
+        }
+        else if ('@ViewBag.success' == "false" && '@ViewBag.message' != "") {
+            Popuphtml('@ViewBag.message', 'error');
+        }
+        var bindSubCategoryURL = '@Url.Action("BindSubCategory", "Logbook")';
+
+        $(document).ready(function(){
+            $("#SubCategoryId").select2({allowClear: true,placeholder: "Select option"});
+            $('.custdatepicker').datetimepicker({
+                "allowInputToggle": true,
+                "showClose": true,
+                "showClear": true,
+                "showTodayButton": true,
+                "format": "MMM, DD YYYY",
+                "useCurrent": false
+            });
+
+            $("#CategoryId").on("change",function(){
+                bindSubCategory($(this).val());
+            });
+
+            if(~~'@Model.CategoryId' > 0)
+            {
+                $("#CategoryId").trigger("change");
+            }
+        });
+
+        function bindSubCategory(selectedValue) {
+            AjaxCall(bindSubCategoryURL+"?id="+selectedValue, "GET", null, function(res) {
+                if (res.success == 'true') {
+                    $("#SubCategoryId").html('');
+                    var optionHtml = "<option>Select SubCategory</option>";
+                    $.each(res.returnMsg, function(j, o) {
+                        optionHtml +='<option value="'+ o["subCategoryId"] +'">'+ o["name"] +'</option>';        
+                    });
+                    $("#SubCategoryId").html(optionHtml);
+                    $("#SubCategoryId").val(@Model.SubCategoryId);
+                }
+                else {
+                    $("#SubCategoryId").html('');
+                    $("#SubCategoryId").val(null);
+                }
+                $("#SubCategoryId").select2({
+                    placeholder: "Select option",
+                    allowClear: true
+                });
+            });
+        }
+    </script>
+}

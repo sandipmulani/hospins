@@ -1,0 +1,697 @@
+﻿@using hospins.Infrastructure;
+@using hospins.Repository.Infrastructure;
+@model hospins.Models.EmployeeModel
+@{
+    ViewData["Title"] = "Manage Employee";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="content">
+    <ol class="breadcrumb">
+        <li><a href="#">Employee</a></li>
+        <li class="active">Add/Edit Employee</li>
+    </ol>
+    <!-- load messages -->
+    <div class="se-pre-con"></div>
+    <!-- load custom page -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-bd lobidrag">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        <h4>Add Employee</h4>
+                    </div>
+                    <div class="w3-bar w3-black">
+                        <button class="w3-bar-item w3-button" onclick="openCity('London')">Add Employee</button>
+                        <button class="w3-bar-item w3-button" onclick="openCity('Paris')">Address</button>
+                        <button class="w3-bar-item w3-button" onclick="openCity('Tokyo')">Salary Setup</button>
+  
+                        <button class="w3-bar-item w3-button" onclick="openCity('Tokyo2')">Employee History</button>
+                        <button class="w3-bar-item w3-button" onclick="openCity('Tokyo3')">Document</button>
+                        <button class="w3-bar-item w3-button" onclick="openCity('Tokyo4')">Offer Letter</button>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <form asp-controller="Employee" asp-action="ManageEmployee" method="post" id="frmEmployee" role="form" enctype="multipart/form-data">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" asp-for="EmployeeId" />
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div id="London" class="city">
+                            <div class="col-md-12 form-group">
+                                <label class="col-sm-2 col-form-div">First Name <i class="text-danger">*</i></label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" asp-for="FirstName" autocomplete="off" maxlength="100" autofocus placeholder="FirstName"/>
+                                    <span class="text-danger" asp-validation-for="FirstName"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label class="col-sm-2 col-form-div">Last Name <i class="text-danger">*</i></label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" asp-for="LastName" autocomplete="off" maxlength="100" autofocus placeholder="LastName"/>
+                                    <span class="text-danger" asp-validation-for="LastName"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label class="col-sm-2 col-form-div">Designation <i class="text-danger">*</i></label>
+                                <div class="col-sm-4">
+                                    <drop-down-list class="select2-selection" asp-for="DesignationId" asp-mode="Designation" asp-default="Select Designation"></drop-down-list>
+                                    <span class="text-danger" asp-validation-for="DesignationId"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label class="col-sm-2 col-form-div">Phone <i class="text-danger">*</i></label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" asp-for="Mobile" autocomplete="off" maxlength="15" autofocus placeholder="Mobile"/>
+                                    <span class="text-danger" asp-validation-for="Mobile"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label class="col-sm-2 col-form-div">Email</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" asp-for="Email" autocomplete="off" maxlength="256" autofocus placeholder="Email"/>
+                                    <span class="text-danger" asp-validation-for="Email"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label class="col-sm-2 col-form-div">Blood Group</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" asp-for="BloodGroup" autocomplete="off" maxlength="3" autofocus placeholder="Blood Group"/>
+                                    <span class="text-danger" asp-validation-for="BloodGroup"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label class="col-sm-2 col-form-div">Address Line 1</label>
+                                <div class="col-sm-4">
+                                    <textarea cols="10" rows="3" class="form-control" asp-for="AddressLine1"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label class="col-sm-2 col-form-div">Address Line 2</label>
+                                <div class="col-sm-4">
+                                    <textarea cols="10" rows="3" class="form-control" asp-for="AddressLine2"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label class="col-sm-2 col-form-div">Picture</label>
+                                <div class="col-sm-4">
+                                    <input type="file" asp-for="File" class="form-control" placeholder="Picture">
+                                    <input type="hidden" asp-for="Picture">
+                                </div>   
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label class="col-sm-2 col-form-div">Country</label>
+                                <div class="col-sm-4">
+                                    <drop-down-list class="select2-selection" asp-for="CountryId" asp-mode="Country" asp-default="Select Country"></drop-down-list>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label class="col-sm-2 col-form-div">City</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" asp-for="City" autocomplete="off" maxlength="50" autofocus placeholder="City" />
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label class="col-sm-2 col-form-div">Zip code</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" asp-for="ZipCode" autocomplete="off" maxlength="50" autofocus placeholder="Zip code" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="Paris" class="city" style="display:none">
+                            <br>
+                             <h3>Current Address</h3>
+                             <br>
+                             <br>
+                            <div class="col-md-12 form-group">
+                                <label class="col-sm-2 col-form-div">Address <i class="text-danger">*</i></label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" asp-for="CurrentAddress.Address" autocomplete="off" maxlength="100" autofocus placeholder="Address"/>
+                                    <span class="text-danger" asp-validation-for="CurrentAddress.Address"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label class="col-sm-2 col-form-div">City <i class="text-danger">*</i></label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" asp-for="CurrentAddress.City " autocomplete="off" maxlength="100" autofocus placeholder="City"/>
+                                    <span class="text-danger" asp-validation-for="CurrentAddress.City "></span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label class="col-sm-2 col-form-div">Country <i class="text-danger">*</i></label>
+                                <div class="col-sm-4">
+                                    <drop-down-list class="select2-selection" asp-for="CurrentAddress.CountryId" asp-mode="Country" asp-default="Select Country"></drop-down-list>
+                                    <span class="text-danger" asp-validation-for="CurrentAddress.CountryId"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label class="col-sm-2 col-form-div">State <i class="text-danger">*</i></label>
+                                <div class="col-sm-4">
+                                    <drop-down-list class="select2-selection" asp-for="CurrentAddress.StateId" asp-mode="Country" asp-default="Select State"></drop-down-list>
+                                    <span class="text-danger" asp-validation-for="CurrentAddress.StateId"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label class="col-sm-2 col-form-div">Zip code</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" asp-for="CurrentAddress.ZipCode" autocomplete="off" maxlength="50" autofocus placeholder="Zip code" />
+                                </div>
+                            </div>
+                            <br />
+                            <h3>Permanent Address</h3>
+                            <br>
+                            <br>
+                            <div class="col-md-12 form-group">
+                                <label class="col-sm-2 col-form-div">Address <i class="text-danger">*</i></label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" asp-for="PermanentAddress.Address" autocomplete="off" maxlength="100" autofocus placeholder="Address"/>
+                                    <span class="text-danger" asp-validation-for="PermanentAddress.Address"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label class="col-sm-2 col-form-div">City <i class="text-danger">*</i></label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" asp-for="PermanentAddress.City " autocomplete="off" maxlength="100" autofocus placeholder="City"/>
+                                    <span class="text-danger" asp-validation-for="PermanentAddress.City "></span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label class="col-sm-2 col-form-div">Country <i class="text-danger">*</i></label>
+                                <div class="col-sm-4">
+                                    <drop-down-list class="select2-selection" asp-for="PermanentAddress.CountryId" asp-mode="Country" asp-default="Select Country"></drop-down-list>
+                                    <span class="text-danger" asp-validation-for="PermanentAddress.CountryId"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label class="col-sm-2 col-form-div">State <i class="text-danger">*</i></label>
+                                <div class="col-sm-4">
+                                    <drop-down-list class="select2-selection" asp-for="PermanentAddress.StateId" asp-mode="Country" asp-default="Select State"></drop-down-list>
+                                    <span class="text-danger" asp-validation-for="PermanentAddress.StateId"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label class="col-sm-2 col-form-div">Zip code</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" asp-for="PermanentAddress.ZipCode" autocomplete="off" maxlength="50" autofocus placeholder="Zip code" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="Tokyo" class="city" style="display:none">
+                            <div class="col-md-12 form-group">
+                                <label class="col-sm-2 col-form-div">Salary Type <i class="text-danger">*</i></label>
+                                <div class="col-sm-4">
+                                    <drop-down-list class="select2-selection" asp-for="EmployeeSalarySetup.SalaryTypeId" asp-mode="Designation" asp-default="Select Salary Type"></drop-down-list>
+                                    <span class="text-danger" asp-validation-for="EmployeeSalarySetup.SalaryTypeId"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label class="col-sm-2 col-form-div">Basis <i class="text-danger">*</i></label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" asp-for="EmployeeSalarySetup.Basis" autocomplete="off" maxlength="100" autofocus placeholder="Basis"/>
+                                    <span class="text-danger" asp-validation-for="EmployeeSalarySetup.Basis"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label class="col-sm-2 col-form-div">Transport <i class="text-danger">*</i></label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" asp-for="EmployeeSalarySetup.Transport" autocomplete="off" maxlength="100" autofocus placeholder="Transport"/>
+                                    <span class="text-danger" asp-validation-for="EmployeeSalarySetup.Transport"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label class="col-sm-2 col-form-div">Health</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" asp-for="EmployeeSalarySetup.Health" autocomplete="off" maxlength="100" autofocus placeholder="Health"/>
+                                    <span class="text-danger" asp-validation-for="EmployeeSalarySetup.Health"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label class="col-sm-2 col-form-div">Pf</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control numberOnly" asp-for="EmployeeSalarySetup.Pf" autocomplete="off" maxlength="100" autofocus placeholder="Pf"/>
+                                    <span class="text-danger" asp-validation-for="EmployeeSalarySetup.Pf"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label class="col-sm-2 col-form-div">Tax</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control numberOnly" asp-for="EmployeeSalarySetup.Tax" autocomplete="off" maxlength="100" autofocus placeholder="Tax"/>
+                                    <span class="text-danger" asp-validation-for="EmployeeSalarySetup.Tax"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label class="col-sm-2 col-form-div">Gross Salary</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control numberOnly" asp-for="EmployeeSalarySetup.GrossSalary" autocomplete="off" maxlength="100" autofocus placeholder="GrossSalary"/>
+                                    <span class="text-danger" asp-validation-for="EmployeeSalarySetup.GrossSalary"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label class="col-sm-2 col-form-div">CTC</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control numberOnly" asp-for="EmployeeSalarySetup.Ctc" autocomplete="off" maxlength="100" autofocus placeholder="CTC"/>
+                                    <span class="text-danger" asp-validation-for="EmployeeSalarySetup.Ctc"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label class="col-sm-2 col-form-div">Salary Benefits</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" asp-for="EmployeeSalarySetup.SalaryBenefits" autocomplete="off" maxlength="100" autofocus placeholder="Salary Benefits"/>
+                                    <span class="text-danger" asp-validation-for="EmployeeSalarySetup.SalaryBenefits"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label class="col-sm-2 col-form-div">Benefits Type</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" asp-for="EmployeeSalarySetup.BenefitsType" autocomplete="off" maxlength="100" autofocus placeholder="Benefits Type"/>
+                                    <span class="text-danger" asp-validation-for="EmployeeSalarySetup.BenefitsType"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="Tokyo2" class="city" style="display:none">
+                            <div class="col-lg-12 col-md-12 mt-4">
+                                <div class="gray-box">
+                                    <div class="child-wrap mb-0">
+                                        <div class="form-group">
+                                            <label>Company Name<i class="text-danger">*</i>&nbsp;:</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Joining Date<i class="text-danger">*</i>&nbsp;:</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Releasing Date&nbsp;:</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Designation<i class="text-danger">*</i>&nbsp;:</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Last Salary<i class="text-danger">*</i>&nbsp;:</label>
+                                        </div>
+                                        <span class="last-gap"></span>
+                                    </div>
+                                    <div class="employee-history-panel" id="employee-history-panel">
+                                        @for (int i = 0; i < Model.EmployeeHistory.Count(); i++)
+                                        {
+                                            <div class="child-wrap employee-history-row" data-index="@i">
+                                                @*<input type="hidden" class="form-control ClsEmployeeHistoryId" asp-for="@Model.EmployeeHistory[i].EmployeeHistoryId"/>*@
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control ClsCompanyName" placeholder="CompanyName" asp-for="@Model.EmployeeHistory[i].CompanyName" autocomplete="off"/>
+                                                    <span class="text-danger ClsCompanyNameErr" asp-validation-for="@Model.EmployeeHistory[i].CompanyName"></span>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control todatepicker ClsJoiningDate numberOnly"  placeholder="JoiningDate" asp-for="@Model.EmployeeHistory[i].JoiningDate" asp-format="{0:MMM dd, yyyy}" autocomplete="off"/>
+                                                    <span class="text-danger ClsJoiningDateErr" asp-validation-for="@Model.EmployeeHistory[i].JoiningDate"></span>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control todatepicker ClsReleasingDate numberOnly"  placeholder="ReleasingDate" asp-for="@Model.EmployeeHistory[i].ReleasingDate" asp-format="{0:MMM dd, yyyy}" autocomplete="off"/>
+                                                    <span class="text-danger ClsReleasingDateErr" asp-validation-for="@Model.EmployeeHistory[i].ReleasingDate"></span>
+                                                </div>
+                                                <div class="form-group ddlbox">
+                                                    <drop-down-list class="form-control" asp-class="ClsDesignationId dont-select-me" asp-for="@Model.EmployeeHistory[i].DesignationId" asp-mode="Designation" asp-default="Designation"></drop-down-list>
+                                                    <span class="text-danger ClsDesignationIdErr" asp-validation-for="@Model.EmployeeHistory[i].DesignationId"></span>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control ClsLastSalary"  placeholder="LastSalary" asp-for="@Model.EmployeeHistory[i].LastSalary" autocomplete="off"/>
+                                                    <span class="text-danger ClsLastSalaryErr" asp-validation-for="@Model.EmployeeHistory[i].LastSalary"></span>
+                                                </div>
+                                                <button type="button" class="btn btn-primary BtnRemoveEmployeeHistory"><i class="fa fa-trash"></i></button>
+                                            </div>
+                                        }
+                                    </div>
+                                    <div class="text-right">
+                                        <button type="button" class="btn btn-secondary" id="BtnAddEmployeeHistory"><i class="fa fa-plus"></i> Add Employee History</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="Tokyo3" class="city" style="display:none">
+                            <div class="col-lg-12 col-md-12 mt-4">
+                                <div class="gray-box">
+                                    <div class="child-wrap mb-0">
+                                        <div class="form-group">
+                                            <label>Document Type<i class="text-danger">*</i>&nbsp;:</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>File Upload<i class="text-danger">*</i>&nbsp;:</label>
+                                        </div>
+                                        <span class="last-gap"></span>
+                                    </div>
+                                    <div class="employee-document-panel" id="employee-document-panel">
+                                        @for (int i = 0; i < Model.EmployeeDocument.Count(); i++)
+                                        {
+                                            <div class="child-wrap employee-document-row" data-index="@i">
+                                                @*<input type="hidden" class="form-control ClsEmployeeDocumentId" asp-for="@Model.EmployeeDocument[i].EmployeeDocumentId"/>*@
+                                                <input type="hidden" class="form-control ClsFileNameId" asp-for="@Model.EmployeeDocument[i].FileName"/>
+                                                <div class="form-group ddlbox">
+                                                    <drop-down-list class="form-control" asp-class="ClsDocumentTypeId dont-select-me" asp-for="@Model.EmployeeDocument[i].DocumentTypeId" asp-mode="DocumentType" asp-default="DocumentType"></drop-down-list>
+                                                    <span class="text-danger ClsDocumentTypeIdErr" asp-validation-for="@Model.EmployeeDocument[i].DocumentTypeId"></span>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="file" class="form-control ClsFile" placeholder="File" asp-for="@Model.EmployeeDocument[i].File" />
+                                                    @*<span class="text-danger ClsFileErr" asp-validation-for="@Model.EmployeeDocument[i].File"></span>*@
+                                                </div>
+                                                <button type="button" class="btn btn-primary BtnRemoveEmployeeDocument"><i class="fa fa-trash"></i></button>
+                                            </div>
+                                        }
+                                    </div>
+                                    <div class="text-right">
+                                        <button type="button" class="btn btn-secondary" id="BtnAddEmployeeDocument"><i class="fa fa-plus"></i> Add Employee Document</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group text-right m-t-5">
+                            <button type="reset" class="btn btn-primary w-md m-b-5">Reset</button>
+                            <button type="submit" class="btn btn-success w-md m-b-5">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .child-wrap{display:flex; margin-bottom:10px; align-items:flex-start; margin-left:-5px;}
+    .child-wrap .form-group{margin:0px; width:100%; padding:0 5px;}
+    .child-wrap .BtnRemoveEmployeeHistory{min-width:44px;}
+    .child-wrap.bdr-btm{border-bottom:1px solid #dde1e5; padding-bottom:10px; margin-bottom:13px;}
+    .last-gap{min-width:44px; display:block;}
+</style>
+@section scripts{
+    <script src="~/js/jquery.validate.min.js"></script>
+    <script src="~/js/jquery.validate.unobtrusive.min.js"></script> 
+    <script>
+        var uploadEmployeeURL = '@Url.Action("UploadFiles", "Employee", new { area = "" })';
+        if ('@ViewBag.success' == "true" && '@ViewBag.message' != "") {
+            Popuphtml('@ViewBag.message', 'success');
+        }
+        else if ('@ViewBag.success' == "false" && '@ViewBag.message' != "") {
+            Popuphtml('@ViewBag.message', 'error');
+        }
+
+        function openCity(cityName) {
+          var i;
+          var x = document.getElementsByClassName("city");
+          for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";
+          }
+          document.getElementById(cityName).style.display = "block";
+        }
+
+        $('.ClsJoiningDate').datetimepicker({
+                "allowInputToggle": true,
+                "showClose": true,
+                "showClear": true,
+                "showTodayButton": true,
+                "format": "MMM DD, YYYY",
+                "useCurrent": false
+        });
+
+        $('.ClsReleasingDate').datetimepicker({
+            "allowInputToggle": true,
+            "showClose": true,
+            "showClear": true,
+            "showTodayButton": true,
+            "format": "MMM DD, YYYY",
+            "useCurrent": false
+        });
+
+        var addEmployeeHistoryItemsPanel;
+        $("#BtnAddEmployeeHistory").on("click",function() {
+            var length = ~~$(".employee-history-row").length;
+            var checkValid = true;
+            if(length > 0) {
+                $(".employee-history-row").each(function (i, e) {
+                    $("#EmployeeHistory_"+ i +"__CompanyName").rules("add", {required : true, messages : { required : 'CompanyName required.' }});
+                    $("#EmployeeHistory_"+ i +"__JoiningDate").rules("add", {required : true, messages : { required : 'JoiningDate required.' }});
+                    $("#EmployeeHistory_"+ i +"__DesignationId").rules("add", {required : true, messages : { required : 'DesignationId required.' }});
+                    $("#EmployeeHistory_"+ i +"__LastSalary").rules("add", {required : true, messages : { required : 'LastSalary required.' }});
+
+                    if(!$("#EmployeeHistory_"+ i +"__CompanyName").valid() || 
+                       !$("#EmployeeHistory_"+ i +"__JoiningDate").valid() ||
+                       !$("#EmployeeHistory_"+ i +"__DesignationId").valid() ||
+                       !$("#EmployeeHistory_"+ i +"__LastSalary").valid()
+                    ) 
+                    {
+                        $("#EmployeeHistory_"+ i +"__CompanyName").valid();
+                        $("#EmployeeHistory_"+ i +"__JoiningDate").valid();
+                        $("#EmployeeHistory_"+ i +"__DesignationId").valid();
+                        $("#EmployeeHistory_"+ i +"__LastSalary").valid();
+                        checkValid = false;
+                    }
+                });
+                $(".employee-history-row").each(function (i, e) {
+                    $("#EmployeeHistory_"+ i +"__CompanyName").rules("remove","required");
+                    $("#EmployeeHistory_"+ i +"__JoiningDate").rules("remove","required");
+                    $("#EmployeeHistory_"+ i +"__DesignationId").rules("remove","required");
+                    $("#EmployeeHistory_"+ i +"__LastSalary").rules("remove","required");
+                });
+            }
+            if(!checkValid) return;
+
+            var cloneEmployeeHistoryDivs,AppendToDiv;
+            if(length == 0) {
+                cloneEmployeeHistoryDivs = addEmployeeHistoryItemsPanel;
+                AppendToDiv= $("#employee-history-panel");
+            }
+            else {
+                cloneEmployeeHistoryDivs = $(".employee-history-row:last").clone();
+                AppendToDiv= $(".employee-history-row:last");
+            }
+            $(cloneEmployeeHistoryDivs).attr("data-index",length);
+            //$(cloneEmployeeHistoryDivs).find(".ClsEmployeeHistoryId").attr("id","EmployeeHistory_"+ length +"__EmployeeHistoryId").attr("name","EmployeeHistory["+ length +"].EmployeeHistoryId").val("0");
+            $(cloneEmployeeHistoryDivs).find(".ClsCompanyName").attr("id","EmployeeHistory_"+ length +"__CompanyName").attr("name","EmployeeHistory["+ length +"].CompanyName").attr("aria-describedby","EmployeeHistory_"+ length +"__CompanyName-error").val(null).trigger("change");
+            $(cloneEmployeeHistoryDivs).find(".ClsJoiningDate").attr("id","EmployeeHistory_"+ length +"__JoiningDate").attr("name","EmployeeHistory["+ length +"].JoiningDate").attr("aria-describedby","EmployeeHistory_"+ length +"__JoiningDate-error").val("");
+            $(cloneEmployeeHistoryDivs).find(".ClsReleasingDate").attr("id","EmployeeHistory_"+ length +"__ReleasingDate").attr("name","EmployeeHistory["+ length +"].ReleasingDate").attr("aria-describedby","EmployeeHistory_"+ length +"__ReleasingDate-error").val("");
+            $(cloneEmployeeHistoryDivs).find(".ClsDesignationId").attr("id","EmployeeHistory_"+ length +"__DesignationId").attr("name","EmployeeHistory["+ length +"].DesignationId").attr("aria-describedby","EmployeeHistory_"+ length +"__DesignationId-error").val("");
+            $(cloneEmployeeHistoryDivs).find(".ClsLastSalary").attr("id","EmployeeHistory_"+ length +"__LastSalary").attr("name","EmployeeHistory["+ length +"].LastSalary").attr("aria-describedby","EmployeeHistory_"+ length +"__LastSalary-error").val("");
+
+            $(cloneEmployeeHistoryDivs).find(".ClsCompanyNameErr").attr("data-valmsg-for","EmployeeHistory["+ length +"].CompanyName");
+            $(cloneEmployeeHistoryDivs).find(".ClsJoiningDateErr").attr("data-valmsg-for","EmployeeHistory["+ length +"].JoiningDate");
+            $(cloneEmployeeHistoryDivs).find(".ClsDesignationIdErr").attr("data-valmsg-for","EmployeeHistory["+ length +"].DesignationId");
+            $(cloneEmployeeHistoryDivs).find(".ClsLastSalaryErr").attr("data-valmsg-for","EmployeeHistory["+ length +"].LastSalary");
+
+            $(cloneEmployeeHistoryDivs).find('.ClsJoiningDate').datetimepicker({
+                "allowInputToggle": true,
+                "showClose": true,
+                "showClear": true,
+                "showTodayButton": true,
+                "format": "MMM DD, YYYY",
+                "useCurrent": false
+            });
+
+            $(cloneEmployeeHistoryDivs).find('.ClsReleasingDate').datetimepicker({
+                "allowInputToggle": true,
+                "showClose": true,
+                "showClear": true,
+                "showTodayButton": true,
+                "format": "MMM DD, YYYY",
+                "useCurrent": false
+            });
+
+            $(cloneEmployeeHistoryDivs).insertAfter(AppendToDiv);
+            var form = $("form#frmEmployee");
+            $.removeData(form[0], 'validator');
+            $.validator.unobtrusive.parse(form);
+        });
+
+        $(document).on("click",".BtnRemoveEmployeeHistory", function(e) {
+            var currentElement = $(this);
+
+            if(    $(this).closest('.employee-history-row').find('.ClsCompanyName').val() == ''
+                && $(this).closest('.employee-history-row').find('.ClsJoiningDate').val() == ''
+                && $(this).closest('.employee-history-row').find('.ClsReleasingDate').val() == ''
+                && $(this).closest('.employee-history-row').find('.ClsDesignationId').val() == ''
+                && $(this).closest('.employee-history-row').find('.ClsLastSalary').val() == ''
+             ) {
+
+                $(currentElement).parent().find('.ClsCompanyName').removeClass("input-validation-error");
+                $(currentElement).parent().find('.ClsJoiningDate').removeClass("input-validation-error");
+                $(currentElement).parent().find('.ClsDesignationId').removeClass("input-validation-error");
+                $(currentElement).parent().find('.ClsLastSalary').removeClass("input-validation-error");
+
+                $(currentElement).parent().find('.ClsCompanyNameErr').text('');
+                $(currentElement).parent().find('.ClsJoiningDateErr').text('');
+                $(currentElement).parent().find('.ClsDesignationErr').text('');
+                $(currentElement).parent().find('.ClsLastSalaryErr').text('');
+                
+                EMPLOYEE_HISTORY_ROW = ~~$(".employee-history-row").length == 1 ? $(".employee-history-row").clone() : null;
+                $(currentElement).parent().remove();
+                fnUpdateEmployeeHistoryIndex();
+
+            } 
+            else {
+                bootbox.confirm({
+                    message: 'Are you sure to delete this employee history?',
+                    centerVertical: true,
+                    buttons: {
+                        confirm: {
+                            label: "yes",
+                            className: 'btn-secondary'
+                        },
+                        cancel: {
+                            label: "no",
+                            className: 'btn-primary'
+                        }
+                    },
+                    callback: function (result) {
+                        if(result){
+                            $(currentElement).parent().find('.ClsCompanyNameErr').removeClass("input-validation-error");
+                            $(currentElement).parent().find('.ClsJoiningDateErr').removeClass("input-validation-error");
+                            $(currentElement).parent().find('.ClsDesignationErr').removeClass("input-validation-error");
+                            $(currentElement).parent().find('.ClsLastSalaryErr').removeClass("input-validation-error");
+                            
+                            $(currentElement).parent().find('.ClsCompanyNameErr').text('');
+                            $(currentElement).parent().find('.ClsJoiningDateErr').text('');
+                            $(currentElement).parent().find('.ClsDesignationErr').text('');
+                            $(currentElement).parent().find('.ClsLastSalaryErr').text('');
+
+                            EMPLOYEE_HISTORY_ROW = ~~$(".employee-history-row").length == 1 ? $(".employee-history-row").clone() : null;
+                            $(currentElement).parent().remove();
+                            fnUpdateEmployeeHistoryIndex();
+                        }
+                    }
+                });
+            }
+        });
+
+        function fnUpdateEmployeeHistoryIndex() {
+            $(".employee-history-row").each(function (i, e) {
+                $(this).attr("data-index",i);
+                //$(this).find(".ClsEmployeeHistoryId").attr("id","EmployeeHistory_"+ length +"__EmployeeHistoryId").attr("name","EmployeeHistory["+ length +"].EmployeeHistoryId");
+                $(this).find(".ClsCompanyName").attr("id","EmployeeHistory_"+ length +"__CompanyName").attr("name","EmployeeHistory["+ length +"].CompanyName").attr("aria-describedby","EmployeeHistory_"+ length +"__CompanyName-error");
+                $(this).find(".ClsJoiningDate").attr("id","EmployeeHistory_"+ length +"__JoiningDate").attr("name","EmployeeHistory["+ length +"].JoiningDate").attr("aria-describedby","EmployeeHistory_"+ length +"__JoiningDate-error");
+                $(this).find(".ClsReleasingDate").attr("id","EmployeeHistory_"+ length +"__ReleasingDate").attr("name","EmployeeHistory["+ length +"].ReleasingDate");
+                $(this).find(".ClsDesignationId").attr("id","EmployeeHistory_"+ length +"__DesignationId").attr("name","EmployeeHistory["+ length +"].DesignationId").attr("aria-describedby","EmployeeHistory_"+ length +"__DesignationId-error");
+                $(this).find(".ClsLastSalary").attr("id","EmployeeHistory_"+ length +"__LastSalary").attr("name","EmployeeHistory["+ length +"].LastSalary").attr("aria-describedby","EmployeeHistory_"+ length +"__LastSalary-error");
+
+                $(this).find(".ClsCompanyNameErr").attr("data-valmsg-for","EmployeeHistory["+ i +"].CompanyName");
+                $(this).find(".ClsJoiningDateErr").attr("data-valmsg-for","EmployeeHistory["+ i +"].JoiningDate");
+                $(this).find(".ClsDesignationIdErr").attr("data-valmsg-for","EmployeeHistory["+ i +"].DesignationId");
+                $(this).find(".ClsLastSalaryErr").attr("data-valmsg-for","EmployeeHistory["+ i +"].LastSalary");
+
+                var form = $("form#frmEmployee");
+                $.removeData(form[0], 'validator');
+                $.validator.unobtrusive.parse(form);
+            });
+        }
+
+        var addEmployeeDocumentItemsPanel;
+        $("#BtnAddEmployeeDocument").on("click",function() {
+            var length = ~~$(".employee-document-row").length;
+            var checkValid = true;
+            if(length > 0) {
+                $(".employee-document-row").each(function (i, e) {
+                    $("#EmployeeDocument_"+ i +"__File").rules("add", {required : true, messages : { required : 'File required.' }});
+                    $("#EmployeeDocument_"+ i +"__DocumentTypeId").rules("add", {required : true, messages : { required : 'DocumentTypeId required.' }});
+                    
+                    if(!$("#EmployeeDocument_"+ i +"__File").valid() || 
+                       !$("#EmployeeDocument_"+ i +"__DocumentTypeId").valid()
+                    )
+                    {
+                        $("#EmployeeDocument_"+ i +"__File").valid();
+                        $("#EmployeeDocument_"+ i +"__DocumentTypeId").valid();
+                        checkValid = false;
+                    }
+                });
+                $(".employee-document-row").each(function (i, e) {
+                    $("#EmployeeDocument_"+ i +"__File").rules("remove","required");
+                    $("#EmployeeDocument_"+ i +"__DocumentTypeId").rules("remove","required");
+                });
+            }
+            if(!checkValid) return;
+
+            var cloneEmployeeDocumentDivs,AppendToDiv;
+            if(length == 0) {
+                cloneEmployeeDocumentDivs = addEmployeeDocumentItemsPanel;
+                AppendToDiv= $("#employee-document-panel");
+            }
+            else {
+                cloneEmployeeDocumentDivs = $(".employee-document-row:last").clone();
+                AppendToDiv= $(".employee-document-row:last");
+            }
+            $(cloneEmployeeDocumentDivs).attr("data-index",length);
+            //$(cloneEmployeeDocumentDivs).find(".ClsEmployeeDocumentId").attr("id","EmployeeDocument_"+ length +"__EmployeeDocumentId").attr("name","EmployeeDocument["+ length +"].EmployeeDocumentId").val("0");
+            $(cloneEmployeeDocumentDivs).find(".ClsFile").attr("id","EmployeeDocument_"+ length +"__File").attr("name","EmployeeDocument["+ length +"].File").attr("aria-describedby","EmployeeDocument_"+ length +"__File-error").val("");
+            $(cloneEmployeeDocumentDivs).find(".ClsFileName").attr("id","EmployeeDocument_"+ length +"__FileName").attr("name","EmployeeDocument["+ length +"].FileName").val("");
+            $(cloneEmployeeDocumentDivs).find(".ClsDocumentTypeId").attr("id","EmployeeDocument_"+ length +"__DocumentTypeId").attr("name","EmployeeDocument["+ length +"].DocumentTypeId").attr("aria-describedby","EmployeeDocument_"+ length +"__DocumentTypeId-error").val("");
+            
+            //$(cloneEmployeeDocumentDivs).find(".ClsFileErr").attr("data-valmsg-for","EmployeeDocument["+ length +"].File");
+            $(cloneEmployeeDocumentDivs).find(".ClsDocumentTypeIdErr").attr("data-valmsg-for","EmployeeDocument["+ length +"].DocumentTypeId");
+            
+            $(cloneEmployeeDocumentDivs).insertAfter(AppendToDiv);
+            var form = $("form#frmEmployee");
+            $.removeData(form[0], 'validator');
+            $.validator.unobtrusive.parse(form);
+        });
+
+        $(document).on("click",".BtnRemoveEmployeeDocument", function(e) {
+            var currentElement = $(this);
+
+            if(    $(this).closest('.employee-document-row').find('.ClsFile').val() == ''
+                && $(this).closest('.employee-document-row').find('.ClsDocumentTypeId').val() == ''
+             ) {
+
+                $(currentElement).parent().find('.ClsFile').removeClass("input-validation-error");
+                $(currentElement).parent().find('.ClsDocumentTypeId').removeClass("input-validation-error");
+                
+                $(currentElement).parent().find('.ClsFileErr').text('');
+                $(currentElement).parent().find('.ClsDocumentTypeIdErr').text('');
+                
+                EMPLOYEE_DOCUMENT_ROW = ~~$(".employee-document-row").length == 1 ? $(".employee-document-row").clone() : null;
+                $(currentElement).parent().remove();
+                fnUpdateEmployeeDocumentIndex();
+
+            } 
+            else {
+                bootbox.confirm({
+                    message: 'Are you sure to delete this employee document?',
+                    centerVertical: true,
+                    buttons: {
+                        confirm: {
+                            label: "yes",
+                            className: 'btn-secondary'
+                        },
+                        cancel: {
+                            label: "no",
+                            className: 'btn-primary'
+                        }
+                    },
+                    callback: function (result) {
+                        if(result){
+                            $(currentElement).parent().find('.ClsFileErr').removeClass("input-validation-error");
+                            $(currentElement).parent().find('.ClsDocumentTypeIdErr').removeClass("input-validation-error");
+                            
+                            $(currentElement).parent().find('.ClsFileErr').text('');
+                            $(currentElement).parent().find('.ClsDocumentTypeIdErr').text('');
+                            
+                            EMPLOYEE_DOCUMENT_ROW = ~~$(".employee-document-row").length == 1 ? $(".employee-document-row").clone() : null;
+                            $(currentElement).parent().remove();
+                            fnUpdateEmployeeDocumentIndex();
+                        }
+                    }
+                });
+            }
+        });
+
+        function fnUpdateEmployeeDocumentIndex() {
+            $(".employee-document-row").each(function (i, e) {
+                $(this).attr("data-index",i);
+                //$(this).find(".ClsEmployeeDocumentId").attr("id","EmployeeDocument_"+ length +"__EmployeeDocumentId").attr("name","EmployeeDocument["+ length +"].EmployeeDocumentId");
+                $(this).find(".ClsFileName").attr("id","EmployeeDocument_"+ length +"__FileName").attr("name","EmployeeDocument["+ length +"].FileName");
+                $(this).find(".ClsFile").attr("id","EmployeeDocument_"+ length +"__File").attr("name","EmployeeDocument["+ length +"].File").attr("aria-describedby","EmployeeDocument_"+ length +"__File-error");
+                $(this).find(".ClsDocumentTypeId").attr("id","EmployeeDocument_"+ length +"__DocumentTypeId").attr("name","EmployeeDocument["+ length +"].DocumentTypeId").attr("aria-describedby","EmployeeDocument_"+ length +"__DocumentTypeId-error");
+                
+                //$(this).find(".ClsFileErr").attr("data-valmsg-for","EmployeeDocument["+ i +"].File");
+                $(this).find(".ClsDocumentTypeIdErr").attr("data-valmsg-for","EmployeeDocument["+ i +"].DocumentTypeId");
+                
+                var form = $("form#frmEmployee");
+                $.removeData(form[0], 'validator');
+                $.validator.unobtrusive.parse(form);
+            });
+        }
+   </script>
+}
