@@ -180,7 +180,8 @@ namespace hospins.Extensions
             return _mapper.Map< List<EmployeeDocument>, List<EmployeeDocumentModel>>(entity);
         }
         #endregion
-         #region :: Document Type ::
+
+        #region :: Document Type ::
         public static DocumentType ToEntity(this DocumentTypeModel model)
         {
             return _mapper.Map<DocumentTypeModel, DocumentType>(model);
@@ -189,6 +190,18 @@ namespace hospins.Extensions
         public static DocumentTypeModel ToModel(this DocumentType entity)
         {
             return _mapper.Map<DocumentType, DocumentTypeModel>(entity);
+        }
+        #endregion
+
+        #region :: Salary Type ::
+        public static SalaryType ToEntity(this SalaryTypeModel model)
+        {
+            return _mapper.Map<SalaryTypeModel, SalaryType>(model);
+        }
+
+        public static SalaryTypeModel ToModel(this SalaryType entity)
+        {
+            return _mapper.Map<SalaryType, SalaryTypeModel>(entity);
         }
         #endregion
     }

@@ -1,7 +1,7 @@
 @using hospins.Repository.Infrastructure;
-@model hospins.Models.DocumentTypeModel
+@model hospins.Models.SalaryTypeModel
 @{
-    ViewData["Title"] = "Manage Document Type";
+    ViewData["Title"] = "Manage Salary Type";
     Layout = null;
 }
 
@@ -9,15 +9,15 @@
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
     </button>
-    <h5 class="modal-title" id="exampleModalLongTitle">Manage Document Type</h5>
+    <h5 class="modal-title" id="exampleModalLongTitle">Manage Salary Type</h5>
 </div>
-<form asp-area = "" asp-controller="Employee" asp-action="ManageDocumentType" method="post" id="frmDocumentType" role="form">
+<form asp-area = "" asp-controller="Employee" asp-action="ManageSalaryType" method="post" id="frmSalaryType" role="form">
     @Html.AntiForgeryToken()
     <div class="modal-body">
-        <input type="hidden" asp-for="DocumentTypeId" />
+        <input type="hidden" asp-for="SalaryTypeId" />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
-            <label>Document Type&nbsp;<span class="text-danger">*</span>:</label>
+            <label>Salary Type&nbsp;<span class="text-danger">*</span>:</label>
             <input type="text" class="form-control" asp-for="Name" autocomplete="off" maxlength="250" autofocus />
             <span class="text-danger" asp-validation-for="Name"></span>
         </div>

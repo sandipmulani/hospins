@@ -23,6 +23,7 @@ namespace hospins.Controllers
         private readonly ICommonRepository<EmployeeHistory> _IEmployeeHistoryRepository;
         private readonly ICommonRepository<EmployeeDocument> _IEmployeeDocumentRepository;
         private readonly ICommonRepository<DocumentType> _IDocumentTypeRepository;
+        private readonly ICommonRepository<SalaryType> _ISalaryTypeRepository;
         public EmployeeController(IMapper mapper,IServiceProvider _service,
         ICommonRepository<Designation> iDesignationRepository,
         ICommonRepository<Employee> iEmployeeRepository,
@@ -30,7 +31,8 @@ namespace hospins.Controllers
         ICommonRepository<EmployeeSalarySetup> iEmployeeSalarySetupRepository,
         ICommonRepository<EmployeeHistory> iEmployeeHistoryRepository,
         ICommonRepository<EmployeeDocument> iEmployeeDocumentRepository,
-        ICommonRepository<DocumentType> iDocumentTypeRepository)
+        ICommonRepository<DocumentType> iDocumentTypeRepository,
+        ICommonRepository<SalaryType> iSalaryTypeRepository)
         {
             _mapper = mapper;
             _serviceProvider = _service;
@@ -41,6 +43,7 @@ namespace hospins.Controllers
             _IEmployeeHistoryRepository = iEmployeeHistoryRepository;
             _IEmployeeDocumentRepository = iEmployeeDocumentRepository;
             _IDocumentTypeRepository = iDocumentTypeRepository;
+            _ISalaryTypeRepository = iSalaryTypeRepository;
         }
 
         #region :: Designation ::
@@ -424,19 +427,19 @@ namespace hospins.Controllers
                 {
                     var documentTypeDb = _IDocumentTypeRepository.GetAll(x => string.Equals(x.Name.Trim().ToLower(), documentType.Name.Trim().ToLower()) && !x.IsDelete).FirstOrDefault();
                     if (documentTypeDb != null)
-                        return Json(new { success = "false", ReturnMsg = "Document Type already exists.", PartialviewContent = this.RenderPartialViewToString("ManageDocumentType", documentType, _serviceProvider) });
+                        return Json(new { success = "false", ReturnMsg = "Document type already exists.", PartialviewContent = this.RenderPartialViewToString("ManageDocumentType", documentType, _serviceProvider) });
                 }
                 if (ModelState.IsValid)
                 {
                     if (documentType.DocumentTypeId == 0)
                     {
                         DocumentType DocumentTypeObj = _IDocumentTypeRepository.InsertAndGetObj(documentType.ToEntity(), CurrentContext.UserDetail.UserId);
-                        return Json(new { success = "true", ReturnMsg = "Document Type saved.", PartialviewContent = "" });
+                        return Json(new { success = "true", ReturnMsg = "Document type saved.", PartialviewContent = "" });
                     }
                     else
                     {
                         _IDocumentTypeRepository.Update(documentType.ToEntity(), CurrentContext.UserDetail.UserId);
-                        return Json(new { success = "true", ReturnMsg = "Document Type updated.", PartialviewContent = "" });
+                        return Json(new { success = "true", ReturnMsg = "Document type updated.", PartialviewContent = "" });
                     }
                 }
                 else
@@ -465,11 +468,11 @@ namespace hospins.Controllers
                 {
                     documentType.IsActive = documentType.IsActive = !documentType.IsActive;
                     _IDocumentTypeRepository.Update(documentType, CurrentContext.UserDetail.UserId, "status");
-                    return Json(new { success = "true", ReturnMsg = "Document Type status change successfully.", PartialviewContent = "" });
+                    return Json(new { success = "true", ReturnMsg = "Document type status change successfully.", PartialviewContent = "" });
                 }
                 else
                 {
-                    return Json(new { success = "false", ReturnMsg = "Document Type does not exist.", PartialviewContent = "" });
+                    return Json(new { success = "false", ReturnMsg = "Document type does not exist.", PartialviewContent = "" });
                 }
             }
             catch (Exception ex)
@@ -496,16 +499,139 @@ namespace hospins.Controllers
                     };
                     var isSuccess = _IDocumentTypeRepository.DeleteRecordSproc("DeleteDocumentType", param, ConfigurationSettings.DBConnection);
 
-                    return Json(new { success = "true", ReturnMsg = "Document Type deleted successfully.", PartialviewContent = "" });
+                    return Json(new { success = "true", ReturnMsg = "Document type deleted successfully.", PartialviewContent = "" });
                 }
                 else
                 {
-                    return Json(new { success = "false", ReturnMsg = "Document Type does not exist.", PartialviewContent = "" });
+                    return Json(new { success = "false", ReturnMsg = "Document type does not exist.", PartialviewContent = "" });
                 }
             }
             catch (Exception ex)
             {
                 ex.SetLog("Master/DeleteMultipleDocumentType");
+                return Json(new { success = "false", ReturnMsg = "Error", PartialviewContent = "" });
+            }
+        }
+        #endregion
+
+        #region :: Salary Type ::
+        public IActionResult SalaryType()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult ManageSalaryType(int id = 0)
+        {
+            var salaryType = new SalaryTypeModel();
+            try
+            {
+                if (id != 0)
+                {
+                    salaryType = _ISalaryTypeRepository.GetById(id).ToModel();
+                    
+                }
+                return PartialView(salaryType);
+            }
+            catch (Exception ex)
+            {
+                ex.SetLog("Employee/ManageSalaryType");
+                return PartialView(salaryType);
+            }
+        }
+
+        [HttpPost]
+        public IActionResult ManageSalaryType(SalaryTypeModel salaryType)
+        {
+            try
+            {
+                var ObjSalaryType = salaryType.SalaryTypeId != 0 ? _ISalaryTypeRepository.GetByIdWithNoTracking(salaryType.SalaryTypeId) : null;
+                if (ObjSalaryType == null || !string.Equals(ObjSalaryType.Name.Trim().ToLower(), salaryType.Name.Trim().ToLower(), StringComparison.OrdinalIgnoreCase))
+                {
+                    var salaryTypeDb = _ISalaryTypeRepository.GetAll(x => string.Equals(x.Name.Trim().ToLower(), salaryType.Name.Trim().ToLower()) && !x.IsDelete).FirstOrDefault();
+                    if (salaryTypeDb != null)
+                        return Json(new { success = "false", ReturnMsg = "Salary type already exists.", PartialviewContent = this.RenderPartialViewToString("ManageSalaryType", salaryType, _serviceProvider) });
+                }
+                if (ModelState.IsValid)
+                {
+                    if (salaryType.SalaryTypeId == 0)
+                    {
+                        SalaryType SalaryTypeObj = _ISalaryTypeRepository.InsertAndGetObj(salaryType.ToEntity(), CurrentContext.UserDetail.UserId);
+                        return Json(new { success = "true", ReturnMsg = "Salary type saved.", PartialviewContent = "" });
+                    }
+                    else
+                    {
+                        _ISalaryTypeRepository.Update(salaryType.ToEntity(), CurrentContext.UserDetail.UserId);
+                        return Json(new { success = "true", ReturnMsg = "Salary type updated.", PartialviewContent = "" });
+                    }
+                }
+                else
+                {
+                    string _message = string.Join(Environment.NewLine, ModelState.Values
+                                               .SelectMany(x => x.Errors)
+                                               .Select(x => x.ErrorMessage));
+                    return Json(new { success = "false", ReturnMsg = _message, PartialviewContent = this.RenderPartialViewToString("ManageSalaryType", salaryType, _serviceProvider) });
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.SetLog("Employee/ManageSalaryType");
+                return Json(new { success = "false", ReturnMsg = ex.Message, PartialviewContent = this.RenderPartialViewToString("ManageSalaryType", salaryType, _serviceProvider) });
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult StatusSalaryType(int Id)
+        {
+            try
+            {
+                var salaryType = _ISalaryTypeRepository.GetById(Id);
+                if (salaryType != null)
+                {
+                    salaryType.IsActive = salaryType.IsActive = !salaryType.IsActive;
+                    _ISalaryTypeRepository.Update(salaryType, CurrentContext.UserDetail.UserId, "status");
+                    return Json(new { success = "true", ReturnMsg = "Salary type status change successfully.", PartialviewContent = "" });
+                }
+                else
+                {
+                    return Json(new { success = "false", ReturnMsg = "Salary type does not exist.", PartialviewContent = "" });
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.SetLog("Master/StatusSalaryType");
+                return Json(new { success = "false", ReturnMsg = "Error", PartialviewContent = "" });
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteMultipleSalaryType(string Id)
+        {
+            try
+            {
+                if (Id != null)
+                {
+                    //var ids = Id.Split(",").Select(t => Convert.ToInt32(t)).ToList();
+                    //var salaryType = _ISalaryTypeRepository.GetAll().Where(t => ids.Contains(t.SalaryTypeId));
+
+                    SqlParameter[] param = {
+                        new SqlParameter("@SalaryTypeId", Id),
+                        new SqlParameter("@UserId", CurrentContext.UserDetail.UserId)
+                    };
+                    var isSuccess = _ISalaryTypeRepository.DeleteRecordSproc("DeleteSalaryType", param, ConfigurationSettings.DBConnection);
+
+                    return Json(new { success = "true", ReturnMsg = "Salary type deleted successfully.", PartialviewContent = "" });
+                }
+                else
+                {
+                    return Json(new { success = "false", ReturnMsg = "Salary type does not exist.", PartialviewContent = "" });
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.SetLog("Master/DeleteMultipleSalaryType");
                 return Json(new { success = "false", ReturnMsg = "Error", PartialviewContent = "" });
             }
         }
