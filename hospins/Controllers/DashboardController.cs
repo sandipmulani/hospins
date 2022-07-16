@@ -1,13 +1,21 @@
 ﻿using hospins.Infrastructure;
 using hospins.Repository.Infrastructure;
+using hospins.Repository.ServiceContract;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using hospins.Repository.Data;
 
 namespace hospins.Controllers
 {
     [UserAuthorize]
     public class DashboardController : Controller
     {
+        private readonly ICommonRepository<State> _IStateRepository;
+        public DashboardController(ICommonRepository<State> iStateRepository)
+        {
+            _IStateRepository = iStateRepository;
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -81,5 +89,20 @@ namespace hospins.Controllers
             }
         }
         #endregion
+
+        [HttpGet]
+        public IActionResult BindState(int id)
+        {
+            try
+            {
+                var states = _IStateRepository.GetAll(t => t.CountryId == id);
+                return Json(new { success = "true", ReturnMsg = states });
+            }
+            catch (Exception ex)
+            {
+                ex.SetLog("Dashboard/BindState");
+                return Json(new { success = "false", ReturnMsg = ex.Message });
+            }
+        }
     }
 }

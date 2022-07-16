@@ -146,7 +146,7 @@
                             <div class="col-md-12 form-group">
                                 <label class="col-sm-2 col-form-div">State <i class="text-danger">*</i></label>
                                 <div class="col-sm-4">
-                                    <drop-down-list class="select2-selection" asp-for="CurrentAddress.StateId" asp-mode="Country" asp-default="Select State"></drop-down-list>
+                                    <select class="select2-selection form-control w-100" title="Select State" asp-for="CurrentAddress.StateId"></select>
                                     <span class="text-danger" asp-validation-for="CurrentAddress.StateId"></span>
                                 </div>
                             </div>
@@ -184,7 +184,7 @@
                             <div class="col-md-12 form-group">
                                 <label class="col-sm-2 col-form-div">State <i class="text-danger">*</i></label>
                                 <div class="col-sm-4">
-                                    <drop-down-list class="select2-selection" asp-for="PermanentAddress.StateId" asp-mode="Country" asp-default="Select State"></drop-down-list>
+                                    <select class="select2-selection form-control w-100" title="Select State" asp-for="PermanentAddress.StateId"></select>
                                     <span class="text-danger" asp-validation-for="PermanentAddress.StateId"></span>
                                 </div>
                             </div>
@@ -384,6 +384,7 @@
     <script src="~/js/jquery.validate.min.js"></script>
     <script src="~/js/jquery.validate.unobtrusive.min.js"></script> 
     <script>
+        var bindStateURL = '@Url.Action("BindState", "Dashboard")';
         var uploadEmployeeURL = '@Url.Action("UploadFiles", "Employee", new { area = "" })';
         if ('@ViewBag.success' == "true" && '@ViewBag.message' != "") {
             Popuphtml('@ViewBag.message', 'success');
@@ -691,6 +692,45 @@
                 var form = $("form#frmEmployee");
                 $.removeData(form[0], 'validator');
                 $.validator.unobtrusive.parse(form);
+            });
+        }
+
+        $("#CurrentAddress_CountryId").on("change",function() {
+            bindState(this,"CurrentAddress_StateId",~~'@(Model?.CurrentAddress?.StateId ?? 0)');
+        });
+        $("#PermanentAddress_CountryId").on("change",function() {
+            bindState(this,"PermanentAddress_StateId",~~'@(Model?.PermanentAddress?.StateId ?? 0)');
+        });
+
+        if(~~'@(Model?.CurrentAddress?.CountryId ?? 0)' > 0)
+        {
+            $("#CurrentAddress_CountryId").trigger("change");
+        }
+
+        if(~~'@(Model?.PermanentAddress?.CountryId ?? 0)' > 0)
+        {
+            $("#PermanentAddress_CountryId").trigger("change");
+        }
+
+        function bindState(_this,_id,_value) {
+            AjaxCall(bindStateURL+"?id="+ $(_this).val(), "GET", null, function(res) {
+                if (res.success == 'true') {
+                    $("#"+_id).html('');
+                    var optionHtml = "<option>Select State</option>";
+                    $.each(res.returnMsg, function(j, o) {
+                        optionHtml +='<option value="'+ o["id"] +'">'+ o["name"] +'</option>';
+                    });
+                    $("#"+_id).html(optionHtml);
+                    $("#"+_id).val(_value);
+                }
+                else {
+                    $("#"+_id).html('');
+                    $("#"+_id).val(null);
+                }
+                $("#"+_id).select2({
+                    placeholder: "Select option",
+                    allowClear: true
+                });
             });
         }
    </script>

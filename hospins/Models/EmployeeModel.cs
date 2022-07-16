@@ -9,10 +9,10 @@
         }
         public int EmployeeId { get; set; }
         public int DesignationId { get; set; }
-        public string? FirstName { get; set; }
-        public string? LastName { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
         public string? Email { get; set; }
-        public string? Mobile { get; set; }
+        public string Mobile { get; set; }
         public string? BloodGroup { get; set; }
         public string? AddressLine1 { get; set; }
         public string? AddressLine2 { get; set; }
@@ -41,7 +41,7 @@
     public class EmployeeSalarySetupModel
     {
         public int SalaryTypeId { get; set; }
-        public string? Basis { get; set; }
+        public string Basis { get; set; } = null!;
         public string Transport { get; set; } = null!;
         public string? Health { get; set; }
         public int? Pf { get; set; }
@@ -54,11 +54,11 @@
 
     public class EmployeeHistoryModel
     {
-        public string? CompanyName { get; set; }
+        public string CompanyName { get; set; } = null!;
         public DateTime? JoiningDate { get; set; }
         public DateTime? ReleasingDate { get; set; }
-        public int? DesignationId { get; set; }
-        public string? LastSalary { get; set; }
+        public int DesignationId { get; set; }
+        public string LastSalary { get; set; }
     }
 
     public class EmployeeDocumentModel
