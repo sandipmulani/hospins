@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using hospins.Infrastructure;
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -471,7 +472,7 @@
                         <img src="https://saleserpnew.bdtask.com/saleserp_v9.8_demo/assets/dist/img/profile_picture/profile.jpg" class="img-circle" alt="User Image">
                     </div>
                     <div class="info">
-                        <p>Admin User</p>
+                        <p>@(CurrentContext.UserDetail.FirstName+" "+ CurrentContext.UserDetail.LastName)</p>
                         <a href="#"><i class="fa fa-circle text-success"></i> Admin</a>
                     </div>
                 </div>
