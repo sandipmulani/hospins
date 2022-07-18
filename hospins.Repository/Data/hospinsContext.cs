@@ -24,7 +24,6 @@ namespace hospins.Repository.Data
         public virtual DbSet<EmployeeSalarySetup> EmployeeSalarySetups { get; set; } = null!;
         public virtual DbSet<Logbook> Logbooks { get; set; } = null!;
         public virtual DbSet<Priority> Priorities { get; set; } = null!;
-        public virtual DbSet<Role> Roles { get; set; } = null!;
         public virtual DbSet<SalaryType> SalaryTypes { get; set; } = null!;
         public virtual DbSet<State> States { get; set; } = null!;
         public virtual DbSet<SubCategory> SubCategories { get; set; } = null!;
@@ -301,15 +300,6 @@ namespace hospins.Repository.Data
                     .HasDefaultValueSql("((0))");
             });
 
-            modelBuilder.Entity<Role>(entity =>
-            {
-                entity.ToTable("Role");
-
-                entity.Property(e => e.RoleName)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-            });
-
             modelBuilder.Entity<SalaryType>(entity =>
             {
                 entity.ToTable("SalaryType");
@@ -372,12 +362,6 @@ namespace hospins.Repository.Data
                 entity.Property(e => e.Username)
                     .HasMaxLength(100)
                     .IsUnicode(false);
-
-                entity.HasOne(d => d.Role)
-                    .WithMany(p => p.Users)
-                    .HasForeignKey(d => d.RoleId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_User_Role");
             });
 
             OnModelCreatingPartial(modelBuilder);

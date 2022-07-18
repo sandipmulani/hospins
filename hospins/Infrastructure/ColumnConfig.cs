@@ -21,7 +21,7 @@ namespace hospins.Infrastructure
             gridParams.RecordPerPage = 10;
             switch (mode)
             {
-                #region :: Users/Role ::
+                #region :: Users ::
                 case "User":
                     {
                         gridParams.ColumnsName = "U.UserId,U.RoleId,R.RoleName,U.Username,(U.FirstName +' '+ U.LastName) as Name,U.Email as Email,U.Mobile as Mobile,U.IsActive,U.IsDelete";
@@ -30,16 +30,6 @@ namespace hospins.Infrastructure
                         gridParams.TableName = "[User] U WITH(NOLOCK) INNER JOIN Role R WITH(NOLOCK) ON R.RoleId=U.RoleId";
                         gridParams.WhereClause = " IsDelete=0 " + Where;
                         gridParams.ExportedFileName = "UserList";
-                        break;
-                    }
-                case "Role":
-                    {
-                        gridParams.ColumnsName = "RoleId,RoleName,IsActive";
-                        gridParams.SortColumn = "RoleId";
-                        gridParams.SortOrder = "desc";
-                        gridParams.TableName = "Role";
-                        gridParams.WhereClause = " IsActive=1  ";
-                        gridParams.ExportedFileName = "RoleList";
                         break;
                     }
                 #endregion

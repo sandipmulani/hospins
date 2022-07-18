@@ -14,7 +14,6 @@ namespace hospins.Infrastructure
     {
         public ApplicationMappingProfile()
         {
-            CreateMap<RoleModel, Role>().ReverseMap().IgnoreAllPropertiesWithAnInaccessibleSetter();
             CreateMap<UserModel, User>().ReverseMap().IgnoreAllPropertiesWithAnInaccessibleSetter();
             CreateMap<Category, CategoryModel>().ReverseMap().IgnoreAllPropertiesWithAnInaccessibleSetter();
             CreateMap<DocumentType, DocumentTypeModel>().ReverseMap().IgnoreAllPropertiesWithAnInaccessibleSetter();

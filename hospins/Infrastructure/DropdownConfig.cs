@@ -34,16 +34,6 @@ namespace hospins.Infrastructure
             if (string.IsNullOrEmpty(where)) where = "1=1";
             switch (true)
             {
-                case bool _ when string.Equals(mode, "role", StringComparison.OrdinalIgnoreCase):
-
-                    {
-                        this.Text = "RoleName";
-                        this.Value = "RoleId";
-                        this.Where = "IsActive=1 AND RoleId > 1";
-                        this.Table = "Role";
-                        this.Order = "RoleName asc";
-                        break;
-                    }
                 case bool _ when string.Equals(mode, "user", StringComparison.OrdinalIgnoreCase):
                     {
                         this.Text = "Username";

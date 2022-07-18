@@ -17,18 +17,6 @@ namespace hospins.Extensions
             _mapper = mapper;
         }
 
-        #region :: Role ::
-        public static RoleModel ToModel(this Repository.Data.Role entity)
-        {
-            return _mapper.Map<Repository.Data.Role, RoleModel>(entity);
-        }
-
-        public static Repository.Data.Role ToEntity(this RoleModel model)
-        {
-            return _mapper.Map<RoleModel, Repository.Data.Role>(model);
-        }
-        #endregion
-
         #region :: User ::
         public static UserModel ToModel(this User entity)
         {

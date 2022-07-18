@@ -25,8 +25,7 @@ namespace hospins.Repository.Services
             try
             {
                 string strEncrPass = SecurityLibrary.GetEncryptedString(password);
-                var objUser = this.db.Users.Where(x => x.Username == username && x.Password == strEncrPass && x.IsActive && !x.IsDelete).Include(t => t.Role).FirstOrDefault();
-                return objUser;
+                return this.db.Users.Where(x => x.Username == username && x.Password == strEncrPass && x.UserTypeId == (int)EnmUserType.User && x.IsActive && !x.IsDelete).FirstOrDefault();
             }
             catch (Exception ex)
             {
@@ -132,7 +131,6 @@ namespace hospins.Repository.Services
             try
             {
                 db.Entry(obj).State = EntityState.Modified;
-                db.Entry(obj).Property(e => e.RoleId).IsModified = false;
                 db.Entry(obj).Property(e => e.Username).IsModified = false;
                 db.Entry(obj).Property(e => e.Password).IsModified = false;
                 db.Entry(obj).Property(e => e.IsActive).IsModified = false;

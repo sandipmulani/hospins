@@ -202,7 +202,7 @@
 
   <ItemGroup>
     <PackageReference Include="EPPlus.Core" Version="1.5.4" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.7" Condition="'$(Configuration)' == 'Debug'"/>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.7" Condition="'$(Configuration)' == 'Debug'" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />   
   </ItemGroup>
 

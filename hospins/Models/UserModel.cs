@@ -6,12 +6,6 @@ namespace hospins.Models
     {
         public int UserId { get; set; }
 
-        [Required(ErrorMessage = "Please select role.")]
-        [Range(0, int.MaxValue, ErrorMessage = "Please Select Role.")]
-        public int RoleId { get; set; }
-
-        public string Role { get; set; }
-
         [Required(ErrorMessage = "Username is required.")]
         public string Username { get; set; }
 

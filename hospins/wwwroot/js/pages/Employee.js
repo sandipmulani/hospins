@@ -22,7 +22,7 @@ function reloadGrid() {
             'className': 'text-center',
             'render': function (data, type, full, meta) {
                 var html = '';
-                html += `<img src="${full.Picture}" height="60px" width="80px"></img>`;
+                html += `<img src="EmployeeDoc/${full.Picture}" height="60px" width="80px"></img>`;
                 return html;
             }
         },
