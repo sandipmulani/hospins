@@ -20,12 +20,12 @@ namespace hospins.Repository.Services
             this.db = _db;
         }
 
-        public User CheckLogin(string username, string password)
+        public User CheckLogin(string username, string password,int loginType)
         {
             try
             {
                 string strEncrPass = SecurityLibrary.GetEncryptedString(password);
-                return this.db.Users.Where(x => x.Username == username && x.Password == strEncrPass && x.UserTypeId == (int)EnmUserType.User && x.IsActive && !x.IsDelete).FirstOrDefault();
+                return this.db.Users.Where(x => x.Username == username && x.Password == strEncrPass && x.UserTypeId == loginType && x.IsActive && !x.IsDelete).FirstOrDefault();
             }
             catch (Exception ex)
             {

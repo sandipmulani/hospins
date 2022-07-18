@@ -36,7 +36,7 @@ namespace hospins.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var objUser = _IUserInfoRepository.CheckLogin(model.UserName, model.Password);
+                    var objUser = _IUserInfoRepository.CheckLogin(model.UserName, model.Password,(int)EnmUserType.User);
                     if (objUser != null)
                     {
                         CurrentContext.UserDetail = objUser;

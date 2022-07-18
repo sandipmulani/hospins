@@ -1,0 +1,52 @@
+﻿@{
+    ViewData["Title"] = "Priority";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="content">
+   <ol class="breadcrumb">
+      <li><a href="#"><i class="pe-7s-home"></i> Dashboard</a></li>
+      <li><a href="#">Logbook</a></li>
+      <li class="active"><span>Priority</span> List</li>
+   </ol>
+
+   <!-- load messages -->
+   <div class="se-pre-con" style="display: none;"></div>
+
+   <!-- load custom page -->
+   <div class="row">
+      <div class="col-sm-12">
+         <div class="panel panel-bd lobidrag">
+            <div class="panel-heading">
+               <div class="panel-title">
+                  <h4>Priority List </h4>
+               </div>
+            </div>
+            <div class="panel-body">
+               <div id="paid_CustomerList_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+                  <div class="row">
+                     <div class="col-sm-12">
+                        @Html.AntiForgeryToken()
+						<table id="tblPriority" class="table table-bordered common-data-table" style="width:100%"></table>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+<div class="modal fade" tabindex="-1" id="modalPriority" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg">
+		<div class="modal-content" id="contentPriority"></div>
+	</div>
+</div> 
+
+@section scripts{
+	<script src="~/js/employeepanelpages/Priority.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+		var addPriorityURL = '@Url.Action("ManagePriority", "Logbook", new { area = "EmployeePanel" })';
+		var statusPriorityURL = '@Url.Action("StatusPriority", "Logbook", new { area = "EmployeePanel" })';
+		var deletePriorityURL = '@Url.Action("DeleteMultiplePriority", "Logbook", new { area = "EmployeePanel" })';
+	</script>
+}

@@ -1,0 +1,52 @@
+﻿@{
+    ViewData["Title"] = "SubCategory";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="content">
+   <ol class="breadcrumb">
+      <li><a href="#"><i class="pe-7s-home"></i> Dashboard</a></li>
+      <li><a href="#">Logbook</a></li>
+      <li class="active"><span>SubCategory</span> List</li>
+   </ol>
+
+   <!-- load messages -->
+   <div class="se-pre-con" style="display: none;"></div>
+
+   <!-- load custom page -->
+   <div class="row">
+      <div class="col-sm-12">
+         <div class="panel panel-bd lobidrag">
+            <div class="panel-heading">
+               <div class="panel-title">
+                  <h4>SubCategory List </h4>
+               </div>
+            </div>
+            <div class="panel-body">
+               <div id="paid_CustomerList_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+                  <div class="row">
+                     <div class="col-sm-12">
+                        @Html.AntiForgeryToken()
+						<table id="tblSubCategory" class="table table-bordered common-data-table" style="width:100%"></table>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+<div class="modal fade" tabindex="-1" id="modalSubCategory" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg">
+		<div class="modal-content" id="contentSubCategory"></div>
+	</div>
+</div> 
+
+@section scripts{
+	<script src="~/js/employeepanelpages/SubCategory.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+		var addSubCategoryURL = '@Url.Action("ManageSubCategory", "Logbook", new { area = "EmployeePanel" })';
+		var statusSubCategoryURL = '@Url.Action("StatusSubCategory", "Logbook", new { area = "EmployeePanel" })';
+		var deleteSubCategoryURL = '@Url.Action("DeleteMultipleSubCategory", "Logbook", new { area = "EmployeePanel" })';
+	</script>
+}

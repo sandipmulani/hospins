@@ -1,19 +1,964 @@
 ﻿<!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@ViewData["Title"] - hospins</title>
+    <!-- Favicon and touch icons -->
+    <link rel="apple-touch-icon" type="image/x-icon" href="assets/dist/img/ico/apple-touch-icon-57-precomposed.png">
+    <link rel="apple-touch-icon" type="image/x-icon" sizes="72x72" href="assets/dist/img/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon" type="image/x-icon" sizes="114x114" href="assets/dist/img/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon" type="image/x-icon" sizes="144x144" href="assets/dist/img/ico/apple-touch-icon-144-precomposed.png">
+    <!-- Start Global Mandatory Style-->
+    <link rel="shortcut icon" href="~/assets/img/icons/2020-09-07/870.png" type="image/x-icon">
+    <!-- jquery ui css -->
+    <link href="~/assets/css/jquery-ui.min.css" rel="stylesheet" type="text/css" />
+    <!-- Bootstrap -->
+    <link href="~/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <!-- Font Awesome 4.7.0 -->
+    <link href="~/assets/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <!-- sliderAccess css -->
+    <link href="~/assets/css/jquery-ui-timepicker-addon.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/css/wickedpicker.min.css" rel="stylesheet" type="text/css" />
+    <!-- slider  -->
+    <link href="~/assets/css/select2.min.css" rel="stylesheet" type="text/css" />
+    <!-- DataTables CSS -->
+    <link href="~/assets/datatables/dataTables.min.css" rel="stylesheet" type="text/css" />
+    <!-- Jquery datatable CSS -->
+    <link rel="stylesheet" href="~/css/jquery.dataTables.css" asp-append-version="true">
+    <!-- Jquery datatable responsive CSS -->
+    <link rel="stylesheet" href="~/css/responsive.dataTables.min.css" asp-append-version="true">
+    <!-- Jquery fixed columns datatable CSS -->
+    @*<link rel="stylesheet" href="~/css/fixedColumns.dataTables.min.css" asp-append-version="true">*@
+    <!-- pe-icon-7-stroke -->
+    <link href="~/assets/css/pe-icon-7-stroke.css" rel="stylesheet" type="text/css" />
+    <!-- themify icon css -->
+    <link href="~/assets/css/themify-icons.css" rel="stylesheet" type="text/css" />
+    <!-- Pace css -->
+    <link href="~/assets/plugins/toastr/toastr.css" rel=stylesheet type="text/css" />
+    <link href="~/assets/css/bootstrap-toggle.min.css" rel="stylesheet" type="text/css" />
+    <!-- Theme style -->
+    <link href="~/assets/css/custom.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/css/style.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/js/sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
+    <!-- Date and Time Picker CSS -->
+    <link rel="stylesheet" href="~/css/bootstrap-datetimepicker.min.css" asp-append-version="true">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- summernote css -->
+    <link href="~/assets/css/print.css" rel="stylesheet" type="text/css" />
+    <!-- jQuery -->
+    <script src="~/assets/js/jquery-3.4.1.min.js" type="text/javascript"></script>
+    <script src="~/assets/js/wickedpicker.min.js"></script>
+    <script src="~/assets/js/jquery.validate.min.js" type="text/javascript"></script>
+    <style>
 
-    <title>Employee</title>
+        /* Data Table css */
+        .table-inner {
+            padding: 30px;
+        }
+
+        .dataTables_wrapper table.dataTable {
+            border-collapse: collapse;
+            border: 0px;
+        }
+
+            .dataTables_wrapper table.dataTable thead th {
+                padding: 8px 20px 8px 10px;
+                font-weight: 500;
+                border-top: 0px;
+                border-bottom: 0px;
+                white-space: nowrap;
+                vertical-align: middle;
+                -webkit-box-sizing: border-box;
+                box-sizing: border-box;
+            }
+
+                .dataTables_wrapper table.dataTable thead th.sorting_disabled {
+                    padding-right: 10px;
+                }
+
+            .dataTables_wrapper table.dataTable tbody th {
+                border-top: 0px;
+                white-space: nowrap;
+            }
+
+            .dataTables_wrapper table.dataTable tbody td {
+                white-space: nowrap;
+                vertical-align: middle;
+                -webkit-box-sizing: border-box;
+                box-sizing: border-box;
+                border-top: 0px;
+            }
+
+            .dataTables_wrapper table.dataTable tfoot th {
+                border-top: 0px;
+                white-space: nowrap;
+                vertical-align: middle;
+                -webkit-box-sizing: border-box;
+                box-sizing: border-box;
+            }
+
+            .dataTables_wrapper table.dataTable tfoot td {
+                border-top: 0px;
+                white-space: nowrap;
+                vertical-align: middle;
+                -webkit-box-sizing: border-box;
+                box-sizing: border-box;
+            }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            border-radius: 0px;
+            margin-left: 0;
+            padding: 5px 10px;
+        }
+
+        .dataTables_wrapper .dataTables_paginate {
+            border: 1px solid #e1e8ef;
+            padding: 0;
+        }
+
+            .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+                color: #ffffff !important;
+                background: #428bca;
+                border-color: #428bca;
+            }
+
+                .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+                    color: #ffffff !important;
+                    background: #428bca;
+                    border-color: #428bca;
+                }
+
+            .dataTables_wrapper .dataTables_paginate .paginate_button {
+                border-radius: 0px;
+                margin-left: 0;
+            }
+
+                .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+                    color: #ffffff !important;
+                    background: #428bca;
+                    border-color: #428bca;
+                }
+
+        .table-bordered td, .table-bordered th {
+            border: 1px solid #dee2e6 !important;
+        }
+
+        /* Data Table End */
+        /* Other dataTable CSS Start */
+        .table .thead-dark th {
+            background: #ffffff;
+            color: #333;
+        }
+
+        .dataTables_wrapper.no-footer .dataTables_scrollBody {
+            border-bottom: 0px;
+        }
+
+        .DTFC_LeftBodyLiner,
+        .DTFC_RightBodyLiner {
+            overflow: hidden;
+            height: 0;
+        }
+
+        .DTFC_RightWrapper .DTFC_RightHeadWrapper {
+            box-shadow: -7px 0 7px -2px rgba(0, 0, 0, 0.1);
+            -moz-box-shadow: -7px 0 7px -2px rgba(0, 0, 0, 0.1);
+            -webkit-box-shadow: -7px 0 7px -2px rgba(0, 0, 0, 0.1);
+        }
+
+        .DTFC_RightWrapper .DTFC_RightBodyWrapper {
+            box-shadow: -6px 0 6px 0px rgba(0, 0, 0, 0.1);
+            -moz-box-shadow: -6px 0 6px 0px rgba(0, 0, 0, 0.1);
+            -webkit-box-shadow: -6px 0 6px 0px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+        }
+
+        .DTFC_LeftWrapper .DTFC_LeftHeadWrapper {
+            box-shadow: 7px 0 7px 2px rgba(0, 0, 0, 0.1);
+            -moz-box-shadow: 7px 0 7px 2px rgba(0, 0, 0, 0.1);
+            -webkit-box-shadow: 7px 0 7px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .DTFC_LeftWrapper .DTFC_LeftBodyWrapper {
+            box-shadow: 6px 0 6px 0px rgba(0, 0, 0, 0.1);
+            -moz-box-shadow: 6px 0 6px 0px rgba(0, 0, 0, 0.1);
+            -webkit-box-shadow: 6px 0 6px 0px rgba(0, 0, 0, 0.1);
+            background: #f3f3f3;
+            z-index: 1;
+        }
+
+        .dataTable .checkbox-fade {
+            margin-right: 0px;
+            display: block;
+            height: 20px;
+        }
+
+            .dataTable .checkbox-fade .cr {
+                margin: 0;
+                float: none;
+            }
+
+            .dataTable .checkbox-fade label span {
+                display: block;
+            }
+
+        /* Other dataTable CSS End */
+        .toolbar {
+            float: left !important;
+        }
+
+        .padd-left-right-0 {
+            padding-left: 0px !important;
+            padding-right: 0px !important;
+        }
+
+        /* .table.dataTable thead tr th {color: #ffffff;background-color: #343a40; border-color: #454d55;} */
+        .w-48 {
+            width: 48%;
+        }
+
+        .normal-right {
+            float: right;
+        }
+
+        .normal-left {
+            float: left;
+        }
+
+        /* datatable action button CSS Start*/
+        .dataTables_info {
+            width: 33.33%;
+        }
+
+        .toolbar {
+            width: 33.33%;
+            text-align: center;
+            margin-top: 16px;
+        }
+
+        .content-wrap ul li.mt-checkbox-list {
+            margin: 5px 0px;
+        }
+
+        .pdfbutton {
+            margin-top: 25px;
+        }
+
+            .pdfbutton a + a {
+                margin-right: 5px;
+            }
+
+        .font-16 {
+            font-size: 16px;
+        }
+
+        /* After Sales project css */
+        table.dataTable > tbody > tr.child {
+            background-color: #ffffff;
+        }
+
+        table.dataTable.dtr-inline.collapsed > tbody > tr > td:first-child:before,
+        table.dataTable.dtr-inline.collapsed > tbody > tr > th:first-child:before {
+            top: calc(50% - 18px);
+            transform: translateY(50%);
+        }
+
+        .column-selection {
+            max-height: 148px;
+            width: 220px;
+            overflow-y: auto;
+            margin: 0px !important;
+        }
+
+            .column-selection li {
+                margin: 8px !important;
+            }
+
+        .toolbar .dropup .column-selection li .checkbox-fade label .checkbox-content {
+            padding-left: 6px;
+            font-size: 12px;
+        }
+
+        .dataTables_scrollBody {
+            z-index: 1;
+        }
+
+        .dataTables_wrapper .dataTables_info {
+            padding-top: 20px;
+        }
+
+        .dataTables_wrapper .dataTables_paginate {
+            margin-top: 10px !important;
+        }
+        /* datatable action button CSS End*/
+
+
+        @@media (min-width: 1025px) and (max-width: 1280px) {
+            .toolbar {
+                width: 23%;
+                text-align: center;
+            }
+        }
+
+        @@media only screen and (max-width: 1024px) {
+            .dataTables_info {
+                width: 100%;
+                text-align: center;
+            }
+
+            .toolbar {
+                width: 100%;
+                text-align: center;
+                margin: 10px 0px;
+            }
+
+            .dataTables_wrapper .dataTables_paginate {
+                float: none;
+                text-align: center;
+                border: 0px;
+                clear: both;
+            }
+        }
+
+        @@media only screen and (max-width: 767px) {
+            .m-center {
+                text-align: center;
+            }
+
+            .normal-right {
+                float: none;
+            }
+
+            .normal-left {
+                float: none;
+            }
+
+            .mb-xs-5 {
+                margin-bottom: 5px;
+            }
+
+            .datatable-drop .dataTables_length {
+                float: none;
+            }
+
+            .toolbar {
+                width: 100%;
+                text-align: center;
+                margin: 10px 0px;
+            }
+
+            .dataTables_info {
+                width: 100%;
+                float: none !important;
+                text-align: center;
+            }
+
+            .dataTables_paginate {
+                width: 100%;
+                margin-top: 10px !important;
+                display: inline-block;
+            }
+
+            .column-selection {
+                width: 150px;
+                right: 0;
+                left: auto;
+                min-width: 100%;
+            }
+            /*Booking page*/
+            .m-mb-30 {
+                margin-bottom: 30px !important;
+            }
+            /*Booking page*/
+        }
+
+        @@media (max-width: 576px) {
+            .pdfbutton {
+                text-align: center;
+            }
+
+                .pdfbutton .btn {
+                    float: none;
+                }
+        }
+
+        @@media only screen and (max-width: 480px) {
+            .toolbar {
+                width: 100%;
+                text-align: center;
+            }
+
+            .dataTables_info {
+                width: 100%;
+                float: left !important;
+                margin-bottom: 10px;
+            }
+
+            .dataTables_paginate {
+                width: 100%;
+                margin-top: 10px !important;
+                display: inline-block;
+            }
+        }
+    </style>
 </head>
+<body class="hold-transition sidebar-mini">
 
-<body>
+    <div class="page-loader-wrapper">
+        <div class="loader">
+            <div class="preloader">
+                <div class="spinner-layer pl-green">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+            </div>
+            <p>Please wait...</p>
+        </div>
+    </div>
+    <div class="wrapper">
+        <header class="main-header">
+            <a asp-controller="Dashboard" asp-action="Index" class="logo">
+                <span class="logo-lg">HOSPINS</span>
+                <span class="logo-mini">
+                    <img src="assets/img/icons/2020-09-07/870.png" alt="">
+                </span>
+            </a>
+            <div class="se-pre-con"></div>
+            <!-- Header Navbar -->
+            <nav class="navbar navbar-static-top">
+                <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                    <!-- Sidebar toggle button-->
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="pe-7s-keypad"></span>
+                </a>
 
-    <h1>Header</h1>
-    @RenderBody()
-    <h1>Footer</h1>
-    
-    @RenderSection("Scripts", required: false)
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                        <!-- Messages -->
+
+                        <li class="dropdown notifications-menu">
+                            <a href="#">
+                                <i class="pe-7s-attention" title="Out Of Stock"></i>
+                                <span class="label label-danger">4</span>
+                            </a>
+                        </li>
+                        <!-- settings -->
+                        <li class="dropdown dropdown-user">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <i class="pe-7s-settings"></i></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#"><i class="pe-7s-users"></i> Edit Profile</a></li>
+                                <li><a href="#"><i class="pe-7s-settings"></i>Change Password</a></li>
+                                <li><a asp-action="Logout" asp-controller="Dashboard"><i class="pe-7s-key"></i>  Logout</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <!-- Left side column. contains the sidebar -->
+        <aside class="main-sidebar">
+            <!-- sidebar -->
+            <div class="sidebar">
+                <!-- Sidebar user panel -->
+                <div class="user-panel text-center">
+                    <div class="image">
+                        <img src="https://saleserpnew.bdtask.com/saleserp_v9.8_demo/assets/dist/img/profile_picture/profile.jpg" class="img-circle" alt="User Image">
+                    </div>
+                    <div class="info">
+                        <p>Admin User</p>
+                        <a href="#"><i class="fa fa-circle text-success"></i> Admin</a>
+                    </div>
+                </div>
+                <!-- sidebar menu -->
+                <ul class="sidebar-menu">
+                    <li class="treeview active">
+                        <a asp-controller="Dashboard" asp-action="Index">
+                            <i class="ti-dashboard"></i>  <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="treeview ">
+                        <a href="javascript:void(0)">
+                            <i class="metismenu-icon pe-7s-user"></i> <span>Content Management System</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu " style="">
+                            <li class="">
+                                <a href="#" class="active">
+                                    Add Customer
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="#">
+                                    Customer List
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="#">
+                                    Credit Customer
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="#">
+                                    Paid Customer
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="#">
+                                    Customer Ledger
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="#">
+                                    Customer Advance
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- Invoice menu start -->
+                    <li class="treeview ">
+                        <a href="javascript:void(0)">
+                            <i class="metismenu-icon pe-7s-user"></i> <span>Banquet Management</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu menu-open">
+                            <li class="">
+                                <a href="#" class="">
+                                    Add Supplier
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="#">
+                                    Supplier List
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="#">
+                                    Supplier Ledger
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="#">
+                                    Supplier Advance
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- supplier menu part -->
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-users"></i><span>HR Managment System</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu" style="display: none;">
+                            <!-- Supplier menu start -->
+                            <li class="treeview">
+                                <a href="#">
+                                    <i class="fa fa-users"></i><span>HRM</span>
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu" style="display: none;">
+                                    <li class="treeview"><a asp-controller="Employee" asp-action="Designation">Designation</a></li>
+                                    <li class="treeview"><a asp-controller="Employee" asp-action="DocumentType">Document Type</a></li>
+                                    <li class="treeview"><a asp-controller="Employee" asp-action="SalaryType">Salary Type</a></li>
+                                    <li class="treeview"><a asp-controller="Employee" asp-action="ManageEmployee">Add Employee</a></li>
+                                    <li class="treeview"><a asp-controller="Employee" asp-action="Index">Manage Employee</a></li>
+                                </ul>
+                            </li>
+                            <!-- ================== Attendance menu start ================= -->
+                            <li class="treeview  ">
+                                <a href="#">
+                                    <i class="fa fa-clock-o"></i><span>Attendance</span>
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li class="treeview  "><a href="#">Attendance</a></li>
+                                    <li class="treeview  "><a href="#">Manage Attendance</a></li>
+                                    <li class="treeview  "><a href="#">Attendance Report</a></li>
+                                </ul>
+                            </li>
+                            <!-- ====================== Attendance menu end ================== -->
+                            <!-- ========================== Payroll menu start =================== -->
+                            <!-- payroll menu start -->
+                            <li class="treeview  ">
+                                <a href="#">
+                                    <i class="fa fa-paypal"></i><span>Payroll</span>
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li class="treeview  ">
+                                        <a href="#">
+                                            Add Benefits
+                                        </a>
+                                    </li>
+                                    <li class="treeview  "><a href="#">Manage Benefits</a></li>
+                                    <li class="treeview  "><a href="#">Add Salary Setup</a></li>
+                                    <li class="treeview  "><a href="#">Manage Salary Setup</a></li>
+                                    <li class="treeview  "><a href="#">Salary Generate</a></li>
+                                    <li class="treeview  "><a href="#">Manage Salary Generate</a></li>
+                                    <li class="treeview  "><a href="#">Salary Payment</a></li>
+                                </ul>
+                            </li>
+                            <!-- =============================== Payroll menu end =================== -->
+                            <!-- =======================   Expense menu start ========================= -->
+                            <li class="treeview  ">
+                                <a href="#">
+                                    <i class="fa fa-credit-card"></i><span>Expense</span>
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li class="treeview  "><a href="#">Add Expense Item</a></li>
+                                    <li class="treeview  "><a href="#">Manage Expense Item</a></li>
+                                    <li class="treeview  "><a href="#">Add Expense</a></li>
+                                    <li class="treeview  "><a href="#">Manage Expense</a></li>
+                                    <li class="treeview  "><a href="#">Expense Statement</a></li>
+                                </ul>
+                            </li>
+                            <!-- ========================== Expense menu end ========================== -->
+                            <!-- Office loan start -->
+                            <li class="treeview  ">
+                                <a href="#">
+                                    <i class="fa fa-university" aria-hidden="true"></i>
+                                    <span>Office Loan</span>
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li class="treeview  "><a href="#">Add Person</a></li>
+                                    <li class="treeview  "><a href="#">Add Loan</a></li>
+                                    <li class="treeview  "><a href="#">Add Payment</a></li>
+                                    <li class="treeview  "><a href="#">Manage Person</a></li>
+                                </ul>
+                            </li>
+                            <!-- Office loan end -->
+                            <!--  Personal loan start -->
+                            <li class="treeview  ">
+                                <a href="#">
+                                    <i class="fa fa-user-circle" aria-hidden="true"></i>
+                                    <span>Personal Loan</span>
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li class="treeview"><a href="#">Add Person</a></li>
+                                    <li class="treeview"><a href="#">Add Loan</a></li>
+                                    <li class="treeview"><a href="#">Add Payment</a></li>
+                                    <li class="treeview"><a href="#">Manage Person</a></li>
+                                </ul>
+                            </li>
+                            <!-- loan end -->
+                        </ul>
+                    </li>
+                    <!-- product menu part -->
+                    <li class="treeview ">
+                        <a href="javascript:void(0)">
+                            <i class="metismenu-icon fa fa-cubes"></i> <span>Account Management</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="">
+                                <a href="#">
+                                    Add Category
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="#">
+                                    Category List
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="#">
+                                    Add Unit
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="#">
+                                    Unit List
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="#">
+                                    Add Product
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="#">
+                                    Add Product (CSV)
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="#">
+                                    Manage Product
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- Purchase menu start -->
+                    <li class="treeview  ">
+                        <a href="#">
+                            <i class="ti-shopping-cart"></i><span>Logbook</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="treeview"><a asp-controller="Logbook" asp-action="Category">Category</a></li>
+                            <li class="treeview"><a asp-controller="Logbook" asp-action="SubCategory">SubCategory</a></li>
+                            <li class="treeview"><a asp-controller="Logbook" asp-action="Priority">Priority</a></li>
+                            <li class="treeview"><a asp-controller="Logbook" asp-action="Index">Log Book</a></li>
+                        </ul>
+                    </li>
+                    <!-- Purchase menu end -->
+                    <!-- Stock menu start -->
+                    <li class="treeview  ">
+                        <a href="#">
+                            <i class="ti-bar-chart"></i><span>Asset Management</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="treeview "><a href="#">Stock Report</a></li>
+                        </ul>
+                    </li>
+                    <!-- Stock menu end -->
+                    <!-- Account part star -->
+                    <li class="treeview  ">
+                        <a href="#">
+                            <i class="fa fa-money"></i><span>Vendor Management</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="treeview "><a href="#">Chart of Account</a></li>
+                            <li class="treeview "><a href="#">Opening Balance</a></li>
+                            <li class="treeview "><a href="#">Supplier Payment</a></li>
+                            <li class="treeview "><a href="#">Customer Receive</a></li>
+                            <li class="treeview "><a href="#">Cash Adjustment</a></li>
+                            <li class="treeview "><a href="#">Debit Voucher</a></li>
+                            <li class="treeview "><a href="#">Credit Voucher</a></li>
+                            <li class="treeview "><a href="#">Contra Voucher</a></li>
+                            <li class="treeview "><a href="#">Journal Voucher</a></li>
+                            <li class="treeview "><a href="#">Vouchar Approval</a></li>
+                            <li class="treeview  ">
+                                <a href="">
+                                    Report                            <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li class="treeview"><a href="#">Cash Book</a></li>
+                                    <li class="treeview "><a href="#">Inventory Ledger</a></li>
+                                    <li class="treeview "><a href="#">Bank Book</a></li>
+                                    <li class="treeview "><a href="#">General Ledger</a></li>
+                                    <li class="treeview "><a href="#">Trial Balance</a></li>
+                                    <li class="treeview "><a href="#">Profit Loss</a></li>
+                                    <li class="treeview "><a href="#">Cash Flow</a></li>
+                                    <li class="treeview "><a href="#">Coa Print</a></li>
+                                    <li class="treeview "><a href="#">Balance Sheet</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <!--  Account End -->
+                    <!-- Report menu start -->
+                    <li class="treeview  ">
+                        <a href="#">
+                            <i class="ti-book"></i><span>Inventory Management</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="treeview"><a href="#">Closing</a></li>
+                            <li class="treeview"><a href="#">Closing Report</a></li>
+                            <li class="treeview"><a href="#">Todays Report</a></li>
+                            <li class="treeview"><a href="#">Todays Customer Receipt</a></li>
+                            <li class="treeview"><a href="#">Sales Report</a></li>
+                            <li class="treeview"><a href="#">User Wise Sales Report</a></li>
+                            <li class="treeview"><a href="#">Due Report</a></li>
+                            <li class="treeview"><a href="#">Shipping Cost Report</a></li>
+                            <li class="treeview"><a href="#">Purchase Report</a></li>
+                            <li class="treeview"><a href="#">Purchase Report (Category wise)</a></li>
+                            <li class="treeview"><a href="#">Sales Report (Product Wise)</a></li>
+                            <li class="treeview"><a href="#">Sales Report (Category wise)</a></li>
+                            <li class="treeview"><a href="#">Sales Return</a></li>
+                            <li class="treeview"><a href="#">Supplier Return</a></li>
+                            <li class="treeview"><a href="#">Tax Report</a></li>
+                            <li class="treeview"><a href="#">Profit Report (Sale Wise)</a></li>
+                        </ul>
+                    </li>
+                    <!-- Report menu end -->
+                    <!-- human resource management menu start -->
+                    <!-- Supplier menu start -->
+                    <!-- Human resource management menu end -->
+                    <!-- Bank menu start -->
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="ti-briefcase"></i><span>Marketing</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="treeview  "><a href="#">Add New Bank</a></li>
+                            <li class="treeview  "><a href="#">Manage Bank</a></li>
+                            <li class="treeview  "><a href="#">Bank Transaction</a></li>
+                            <li class="treeview  "><a href="#">Bank Ledger</a></li>
+                        </ul>
+                    </li>
+                    <!-- Bank menu end -->
+                    <!-- service menu start -->
+                    <li class="treeview  ">
+                        <a href="#">
+                            <i class="fa fa-asl-interpreting"></i><span>Front Office</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="treeview  "><a href="#">Add Service</a></li>
+                            <li class="treeview  "><a href="#">Manage Service</a></li>
+                            <li class="treeview  "><a href="#">Service Invoice</a></li>
+                            <li class="treeview  "><a href="#">Manage Service Invoice</a></li>
+                        </ul>
+                    </li>
+                    <!-- Comission start -->
+                    <li class="treeview  ">
+                        <a href="#">
+                            <i class="ti-layout-grid2"></i><span>Channel Manager</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="treeview  "><a href="#">Generate Commssion</a></li>
+                        </ul>
+                    </li>
+                    <!-- Comission end -->
+                    <!-- Quotation Menu Start -->
+                    <li class="treeview  ">
+                        <a href="#">
+                            <i class="fa fa-book"></i><span>POS Management</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="treeview  "><a href="#">Add Quotation</a></li>
+                            <li class="treeview  "><a href="#">Manage Quotation</a></li>
+                        </ul>
+                    </li>
+                    <!-- quotation Menu end -->
+                    <!-- Tax menu start -->
+                    <li class="treeview  ">
+                        <a href="#">
+                            <i class="fa fa-money"></i><span>Membership & Loyalty</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="treeview  "><a href="#">Tax Settings</a></li>
+                            <li class="treeview  "><a href="#">Add Income Tax</a></li>
+                            <li class="treeview  "><a href="#">Manage Income Tax</a></li>
+                            <li class="treeview  "><a href="#">Tax Report</a></li>
+                            <li class="treeview  "><a href="#">Invoice Wise Tax Report</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.sidebar -->
+        </aside>
+        <div class="content-wrapper">
+            @RenderBody()
+        </div>
+
+        <footer class="main-footer">
+            <strong>Copyright@waysaheadglobal.All rights reserved.</strong>
+        </footer>
+    </div>
+
+    <script type="text/javascript">
+        var session = {
+            minutes: '240',
+            bufferminutes: '2',
+        };
+        var pathRoot = '@Url.Content("~")';
+        var dataTableUrl = "@Url.Action("GetGridData", "Dashboard", new { area = "EmployeePanel" })";
+        var dataTableExportUrl = "@Url.Action("ExportData", "Dashboard", new { area = "EmployeePanel" })";
+        var loginUrl =  "@Url.Action("Index", "Home", new { area = "EmployeePanel" })";
+        var ImagePath = "@Url.Content("~/images")";
+    </script>
+
+    <!-- Start Core Plugins-->
+    <script src="~/assets/js/jquery-ui.min.js" type="text/javascript"></script>
+
+    <!-- Moment js -->
+    <script src='~/js/moment.min.js' asp-append-version="true"></script>
+    <!-- bootstrap js -->
+    <script src="~/assets/js/bootstrap.min.js" type="text/javascript"></script>
+    <!-- pace js -->
+    <script src="~/assets/js/pace.min.js" type="text/javascript"></script>
+    <!-- SlimScroll -->
+    <script src="~/assets/js/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <!-- bootstrap timepicker -->
+    <script src="~/assets/js/jquery-ui-timepicker-addon.min.js" type="text/javascript"></script>
+    <!-- select2 js -->
+    <script src="~/assets/js/select2.min.js" type="text/javascript"></script>
+    <!-- ChartJs JavaScript -->
+    <script src="~/assets/js/Chart.min.js?v=2.5" type="text/javascript"></script>
+    <!-- Data Table grid js -->
+    <script src="~/js/jquery.dataTables.js" asp-append-version="true"></script>
+    <!-- Data Table common js -->
+    <script src="~/js/DataTableCommon.js" asp-append-version="true"></script>
+    <!-- Data Table fix colum js -->
+    @*<script src="~/js/dataTables.fixedColumns.min.js" asp-append-version="true"></script>*@
+    <!-- Data Table Responsive min js -->
+    <script src="~/js/dataTables.responsive.min.js" asp-append-version="true"></script>
+    <!-- Table Head Fixer -->
+    <script src="~/assets/js/tableHeadFixer.js" type="text/javascript"></script>
+    <!-- Admin Script -->
+    <script src="~/assets/js/frame.js" type="text/javascript"></script>
+    <script src="~/assets/js/bootstrap-toggle.min.js" type="text/javascript"></script>
+    <script src="~/assets/plugins/toastr/toastr.min.js"></script>
+    <script src="~/assets/js/sweetalert/sweetalert.min.js" type="text/javascript"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="~/assets/js/custom.js" type="text/javascript"></script>
+    <!-- summernote js -->
+    <script src="~/assets/js/mousetrap-master/mousetrap.js"></script>
+    <script src="~/assets/js/print.js"></script>
+    <script src="~/assets/js/perfect-scrollbar.min.js"></script>
+    <script src="~/assets/js/jstree.min.js"></script>
+    <!-- Date and Time Picker JS -->
+    <script src='~/js/bootstrap-datetimepicker.min.js' asp-append-version="true"></script>
+    <!-- Bootbox JS -->
+    <script src="~/js/bootbox.min.js" asp-append-version="true"></script>
+    <script src="~/js/Common.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
-
 </html>
