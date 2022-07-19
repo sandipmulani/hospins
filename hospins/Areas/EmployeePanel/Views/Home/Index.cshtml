@@ -47,7 +47,7 @@
                     <div class="form-inner">
                         <h3 class="d-lg-none">Hospins</h3>
                         <h3>Sign in</h3>
-                        <form asp-controller="Home" asp-action="Index" asp-area="" method="post" id="FrmLogin" name="FrmLogin">
+                        <form asp-controller="Home" asp-action="Index" asp-area="EmployeePanel" method="post" id="FrmLogin" name="FrmLogin">
                             @Html.AntiForgeryToken()
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             <div class="form-group form-box">

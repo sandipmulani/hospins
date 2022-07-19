@@ -1,0 +1,52 @@
+﻿@{
+    ViewData["Title"] = "SalaryType";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="content">
+   <ol class="breadcrumb">
+      <li><a href="#"><i class="pe-7s-home"></i> Dashboard</a></li>
+      <li><a href="#">Employee</a></li>
+      <li class="active"><span>Salary Type</span> List</li>
+   </ol>
+
+   <!-- load messages -->
+   <div class="se-pre-con" style="display: none;"></div>
+
+   <!-- load custom page -->
+   <div class="row">
+      <div class="col-sm-12">
+         <div class="panel panel-bd lobidrag">
+            <div class="panel-heading">
+               <div class="panel-title">
+                  <h4>Salary Type List </h4>
+               </div>
+            </div>
+            <div class="panel-body">
+               <div id="paid_CustomerList_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+                  <div class="row">
+                     <div class="col-sm-12">
+                        @Html.AntiForgeryToken()
+						<table id="tblSalaryType" class="table table-bordered common-data-table" style="width:100%"></table>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+<div class="modal fade" tabindex="-1" id="modalSalaryType" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg">
+		<div class="modal-content" id="contentSalaryType"></div>
+	</div>
+</div> 
+
+@section scripts{
+	<script src="~/js/employeepanelpages/SalaryType.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+		var addSalaryTypeURL = '@Url.Action("ManageSalaryType", "Employee", new { area = "EmployeePanel" })';
+		var statusSalaryTypeURL = '@Url.Action("StatusSalaryType", "Employee", new { area = "EmployeePanel" })';
+		var deleteSalaryTypeURL = '@Url.Action("DeleteMultipleSalaryType", "Employee", new { area = "EmployeePanel" })';
+	</script>
+}

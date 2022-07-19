@@ -6,7 +6,7 @@ namespace hospins.Repository.ServiceContract
 {
     public interface IUserRepository : IDisposable
     {
-        User CheckLogin(string username, string password);
+        User CheckLogin(string username, string password,int loginType);
         List<User> GetAll(Expression<Func<User, bool>> expression = null);
         User GetById(int Id);
         int Insert(User obj, int UserId);
