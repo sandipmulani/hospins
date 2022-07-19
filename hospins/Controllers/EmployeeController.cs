@@ -7,6 +7,7 @@ using hospins.Repository.Infrastructure;
 using hospins.Repository.ServiceContract;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Rotativa.AspNetCore;
 using System.Data.SqlClient;
 
 namespace hospins.Controllers
@@ -24,6 +25,8 @@ namespace hospins.Controllers
         private readonly ICommonRepository<EmployeeDocument> _IEmployeeDocumentRepository;
         private readonly ICommonRepository<DocumentType> _IDocumentTypeRepository;
         private readonly ICommonRepository<SalaryType> _ISalaryTypeRepository;
+        private readonly ICommonRepository<Country> _ICountryRepository;
+        private readonly ICommonRepository<State> _IStateRepository;
         public EmployeeController(IMapper mapper,IServiceProvider _service,
         ICommonRepository<Designation> iDesignationRepository,
         ICommonRepository<Employee> iEmployeeRepository,
@@ -32,7 +35,9 @@ namespace hospins.Controllers
         ICommonRepository<EmployeeHistory> iEmployeeHistoryRepository,
         ICommonRepository<EmployeeDocument> iEmployeeDocumentRepository,
         ICommonRepository<DocumentType> iDocumentTypeRepository,
-        ICommonRepository<SalaryType> iSalaryTypeRepository)
+        ICommonRepository<SalaryType> iSalaryTypeRepository,
+        ICommonRepository<Country> iCountryRepository,
+        ICommonRepository<State> iStateRepository)
         {
             _mapper = mapper;
             _serviceProvider = _service;
@@ -44,6 +49,8 @@ namespace hospins.Controllers
             _IEmployeeDocumentRepository = iEmployeeDocumentRepository;
             _IDocumentTypeRepository = iDocumentTypeRepository;
             _ISalaryTypeRepository = iSalaryTypeRepository;
+            _ICountryRepository = iCountryRepository;
+            _IStateRepository = iStateRepository;
         }
 
         #region :: Designation ::
@@ -636,5 +643,39 @@ namespace hospins.Controllers
             }
         }
         #endregion
+
+        public IActionResult DownloadOfferLetter(int id)
+        {
+            #region :: EMPLOYEE ::
+            var employee = _mapper.Map<EmployeePdfModel>(_IEmployeeRepository.GetById(id));
+            if (employee != null)
+            {
+                var _designation = _IDesignationRepository.GetAll().ToList();
+                var _country = _ICountryRepository.GetAll().ToList();
+                var _state = _IStateRepository.GetAll().ToList();
+                var _salaryType = _ISalaryTypeRepository.GetById(0);
+
+                //employee.Designation = _IDesignationRepository.GetById(0)
+                //employee.Country
+
+                employee.CurrentAddress = _mapper.Map<EmployeeAddressPdfModel>(_IEmployeeAddressRepository.GetAll().FirstOrDefault(t => t.EmployeeId == employee.EmployeeId && t.IsDelete == false && t.IsActive == true && t.AddressTypeId == 1));
+                //employee.CurrentAddress.Country
+                //employee.CurrentAddress.State
+
+                employee.PermanentAddress = _mapper.Map<EmployeeAddressPdfModel>(_IEmployeeAddressRepository.GetAll().FirstOrDefault(t => t.EmployeeId == employee.EmployeeId && t.IsDelete == false && t.IsActive == true && t.AddressTypeId == 2));
+                //employee.PermanentAddress.Country
+                //employee.PermanentAddress.State
+
+                employee.EmployeeSalarySetup = _mapper.Map<EmployeeSalarySetupPdfModel>(_IEmployeeSalarySetupRepository.GetAll().FirstOrDefault(t => t.EmployeeId == employee.EmployeeId && t.IsDelete == false && t.IsActive == true));
+                //employee.EmployeeSalarySetup.SalaryType
+
+                employee.EmployeeHistory = _mapper.Map<List<EmployeeHistoryPdfModel>>(_IEmployeeHistoryRepository.GetAll(x => x.EmployeeId == employee.EmployeeId && x.IsDelete == false));
+                //employee.EmployeeHistory.Designation
+
+                employee.EmployeeDocument = _mapper.Map<List<EmployeeDocumentPdfModel>>(_IEmployeeDocumentRepository.GetAll(x => x.EmployeeId == employee.EmployeeId && x.IsDelete == false));
+            }
+            #endregion
+            return new ViewAsPdf(employee);
+        }
     }
 }
